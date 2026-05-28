@@ -5,19 +5,22 @@ import Speakers from '../components/Speakers'
 import Agenda from '../components/Agenda'
 import RegisterForm from '../components/RegisterForm'
 import Footer from '../components/Footer'
+import FloatingScrollTop from '../components/FloatingScrollTop'
 
 export default function Home() {
   return (
     <>
-      <Navbar />
       <main>
+        <Navbar />
         <Hero />
         <About />
         <Speakers />
         <Agenda />
         <RegisterForm />
+        <Footer />
       </main>
-      <Footer />
+
+      <FloatingScrollTop />
     </>
   )
 }

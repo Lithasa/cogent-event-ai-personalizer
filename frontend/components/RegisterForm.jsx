@@ -1,280 +1,377 @@
 'use client'
+
 import { useState } from 'react'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
+import {
+  ArrowRight,
+  BriefcaseBusiness,
+  CheckCircle2,
+  Mail,
+  Ship,
+  User,
+} from 'lucide-react'
+import styles from './RegisterForm.module.css'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
 
-const inputStyle = {
-  width: '100%', background: 'rgba(10,22,40,0.8)',
-  border: '1px solid var(--border)', borderRadius: '2px',
-  padding: '0.85rem 1rem', color: 'var(--white)',
-  fontSize: '0.9rem', fontFamily: 'DM Sans, sans-serif',
-  outline: 'none', transition: 'border-color 0.2s',
-}
+const sessionFilters = [
+  {
+    id: 'digital-logistics',
+    label: 'Digital Logistics',
+    hint: 'Cost pressure, market volatility, logistics visibility',
+    keywords:
+      'digital logistics, supply chain cost pressure, market volatility, transportation visibility, logistics operations',
+  },
+  {
+    id: 'implementation',
+    label: 'Implementation',
+    hint: 'Deployment, integration, implementation risk',
+    keywords:
+      'implementation strategy, digital transformation deployment, system integration, implementation risk management',
+  },
+  {
+    id: 'gen-ai-scm',
+    label: 'Gen AI SCM',
+    hint: 'AI, predictive analytics, smart supply chain',
+    keywords:
+      'Oracle Gen AI SCM, predictive analytics, AI automation, smart supply chain, inventory intelligence',
+  },
+  {
+    id: 'digital-evolution',
+    label: 'Digital Evolution',
+    hint: 'Automation, scalability, transformation results',
+    keywords:
+      'digital evolution, warehouse automation, transformation results, scalable supply chain systems',
+  },
+  {
+    id: 'sustainability',
+    label: 'Sustainability',
+    hint: 'Green operations and resilient supply chains',
+    keywords:
+      'green operations, sustainable sourcing, supply chain resilience, sustainable logistics',
+  },
+  {
+    id: 'networking',
+    label: 'Networking',
+    hint: 'Business networking and partner connections',
+    keywords:
+      'networking, business development, industry connections, technology partners, supply chain leaders',
+  },
+]
 
 export default function RegisterForm() {
-  const [form, setForm] = useState({ name: '', email: '', focus: '' })
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    focus: '',
+    sessionFilter: 'digital-logistics',
+  })
+
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState(null)
-  const [focusedField, setFocusedField] = useState(null)
 
-  const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
+  const handleChange = (event) => {
+    const { name, value } = event.target
 
-  const handleSubmit = async e => {
-    e.preventDefault()
-    if (!form.name || !form.email || !form.focus) return
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleFilterSelect = (filterId) => {
+    setForm((prev) => ({
+      ...prev,
+      sessionFilter: filterId,
+    }))
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    if (!form.name.trim() || !form.email.trim() || !form.focus.trim()) {
+      return
+    }
+
+    const selectedSession =
+      sessionFilters.find((item) => item.id === form.sessionFilter) ||
+      sessionFilters[0]
 
     setStatus('loading')
+    setResult(null)
+
     try {
-      const res = await fetch(`${BACKEND_URL}/match`, {
+      const response = await fetch(`${BACKEND_URL}/match`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           name: form.name,
           email: form.email,
-          professional_focus: form.focus,
+          professional_focus: `${selectedSession.label}. ${selectedSession.keywords}. ${form.focus}`,
         }),
       })
 
-      if (!res.ok) throw new Error('Server error')
-      const data = await res.json()
+      if (!response.ok) {
+        throw new Error('Backend request failed')
+      }
+
+      const data = await response.json()
       setResult(data)
       setStatus('success')
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.error(error)
       setStatus('error')
     }
   }
 
-  const getFocusBorder = field => focusedField === field ? 'var(--gold)' : 'var(--border)'
+  const resetForm = () => {
+    setForm({
+      name: '',
+      email: '',
+      focus: '',
+      sessionFilter: 'digital-logistics',
+    })
 
-  if (status === 'success' && result) {
-    return (
-      <section id="register" className="section" style={{ background: 'var(--navy-mid)' }}>
-        <div className="container" style={{ maxWidth: 760 }}>
-          <div style={{
-            background: 'var(--card-bg)', border: '1px solid var(--border-strong)',
-            borderRadius: '4px', padding: '3rem', backdropFilter: 'blur(12px)',
-            animation: 'fadeUp 0.6s ease both',
-          }}>
-            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚓</div>
-
-              {/* FIX 1 — template literal handles apostrophe + variable together */}
-              <h2 style={{ fontSize: '1.8rem', color: 'var(--gold)', marginBottom: '0.5rem' }}>
-                {`You're on the list, ${form.name.split(' ')[0]}!`}
-              </h2>
-
-              {/* FIX 2 — template literal handles apostrophe in static text */}
-              <p style={{ color: 'var(--white-dim)', fontSize: '0.9rem' }}>
-                {`We've matched you to the perfect session and drafted your invitation.`}
-              </p>
-            </div>
-
-            {/* Matched session */}
-            <div style={{
-              background: 'rgba(201,168,76,0.07)', border: '1px solid var(--border-strong)',
-              borderRadius: '4px', padding: '1.5rem', marginBottom: '2rem',
-            }}>
-              <p style={{
-                color: 'var(--gold)', fontSize: '0.7rem', letterSpacing: '0.15em',
-                textTransform: 'uppercase', fontFamily: 'DM Mono, monospace', marginBottom: '0.75rem',
-              }}>
-                Best Matched Session
-              </p>
-              <h3 style={{ color: 'var(--white)', fontSize: '1.1rem', marginBottom: '0.4rem' }}>
-                {result.matched_session.title}
-              </h3>
-              <p style={{ color: 'var(--white-dim)', fontSize: '0.85rem' }}>
-                🕐 {result.matched_session.time} · {result.matched_session.speaker}
-              </p>
-            </div>
-
-            {/* Email draft */}
-            <div>
-              <p style={{
-                color: 'var(--gold)', fontSize: '0.7rem', letterSpacing: '0.15em',
-                textTransform: 'uppercase', fontFamily: 'DM Mono, monospace', marginBottom: '1rem',
-              }}>
-                Your Personalised Invitation Email
-              </p>
-              <div style={{
-                background: 'rgba(10,22,40,0.8)', border: '1px solid var(--border)',
-                borderRadius: '4px', padding: '1.5rem',
-                color: 'var(--white-dim)', fontSize: '0.88rem', lineHeight: 1.9,
-                whiteSpace: 'pre-wrap', fontFamily: 'DM Sans, sans-serif',
-                maxHeight: 400, overflowY: 'auto',
-              }}>
-                {result.email_draft}
-              </div>
-            </div>
-
-            <button
-              onClick={() => {
-                setStatus('idle')
-                setResult(null)
-                setForm({ name: '', email: '', focus: '' })
-              }}
-              style={{
-                marginTop: '2rem', background: 'transparent',
-                border: '1px solid var(--border)', color: 'var(--white-dim)',
-                padding: '0.7rem 1.5rem', borderRadius: '2px', cursor: 'pointer',
-                fontSize: '0.85rem', fontFamily: 'DM Sans, sans-serif',
-              }}
-            >
-              ← Submit another
-            </button>
-          </div>
-        </div>
-      </section>
-    )
+    setResult(null)
+    setStatus('idle')
   }
 
   return (
-    <section id="register" className="section" style={{ background: 'var(--navy-mid)' }}>
-      <div className="container" style={{ maxWidth: 760 }}>
+    <section id="register" className={styles.registerSection}>
+      <div className={styles.bgGlowLeft} />
+      <div className={styles.bgGlowRight} />
 
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <span style={{
-            color: 'var(--gold)', fontSize: '0.75rem', letterSpacing: '0.2em',
-            textTransform: 'uppercase', fontFamily: 'DM Mono, monospace',
-            display: 'block', marginBottom: '1rem',
-          }}>
-            Secure Your Seat
-          </span>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
-            Register & Get Your{' '}
-            <em style={{ color: 'var(--gold)' }}>Personalised Invite</em>
+      <div className={styles.container}>
+        <motion.div
+          className={styles.sectionIntro}
+          initial={{ opacity: 0, y: -34, filter: 'blur(8px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ once: false, amount: 0.35 }}
+          transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className={styles.sectionKicker}>Registration</p>
+
+          <h2 className={styles.sectionTitle}>
+            Let’s get your <em>seat secured</em>
           </h2>
-          <p style={{ color: 'var(--white-dim)', marginTop: '1rem', lineHeight: 1.8, fontSize: '0.9rem' }}>
-            Tell us about your professional focus and our AI will match you to the most
-            relevant session, then draft a personalised invitation email just for you.
-          </p>
-        </div>
+        </motion.div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} style={{
-          background: 'var(--card-bg)', border: '1px solid var(--border)',
-          borderRadius: '4px', padding: '3rem', backdropFilter: 'blur(12px)',
-        }}>
-          <div style={{ display: 'grid', gap: '1.5rem' }}>
+        <div className={styles.mainGrid}>
+          <motion.div
+            className={styles.formPanel}
+            initial={{ opacity: 0, x: -70 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{
+              duration: 0.75,
+              ease: [0.16, 1, 0.3, 1],
+              delay: 0.08,
+            }}
+          >
+            {status === 'loading' ? (
+              <div className={styles.loadingBox}>
+                <div className={styles.seaLoader}>
+                  <Ship className={styles.shipIcon} size={42} />
+                  <div className={`${styles.wave} ${styles.waveOne}`} />
+                  <div className={`${styles.wave} ${styles.waveTwo}`} />
+                </div>
 
-            {/* Name */}
-            <div>
-              <label style={{
-                display: 'block', color: 'var(--white-dim)', fontSize: '0.8rem',
-                letterSpacing: '0.08em', marginBottom: '0.5rem', textTransform: 'uppercase',
-              }}>
-                Full Name <span style={{ color: 'var(--gold)' }}>*</span>
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="e.g. Sarah Al-Mansoori"
-                required
-                onFocus={() => setFocusedField('name')}
-                onBlur={() => setFocusedField(null)}
-                style={{ ...inputStyle, borderColor: getFocusBorder('name') }}
-              />
-            </div>
+                <h3>Preparing your invitation...</h3>
 
-            {/* Email */}
-            <div>
-              <label style={{
-                display: 'block', color: 'var(--white-dim)', fontSize: '0.8rem',
-                letterSpacing: '0.08em', marginBottom: '0.5rem', textTransform: 'uppercase',
-              }}>
-                Corporate Email <span style={{ color: 'var(--gold)' }}>*</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="e.g. sarah@company.com"
-                required
-                onFocus={() => setFocusedField('email')}
-                onBlur={() => setFocusedField(null)}
-                style={{ ...inputStyle, borderColor: getFocusBorder('email') }}
-              />
-            </div>
+                <p>
+                  Matching your professional focus with the most relevant
+                  session and generating your invitation draft.
+                </p>
+              </div>
+            ) : status === 'success' && result ? (
+              <div className={styles.invitationBox}>
+                <div className={styles.successMark}>
+                  <CheckCircle2 size={30} />
+                </div>
 
-            {/* Professional Focus */}
-            <div>
-              <label style={{
-                display: 'block', color: 'var(--white-dim)', fontSize: '0.8rem',
-                letterSpacing: '0.08em', marginBottom: '0.5rem', textTransform: 'uppercase',
-              }}>
-                Professional Focus / Career Challenges <span style={{ color: 'var(--gold)' }}>*</span>
-              </label>
-              <textarea
-                name="focus"
-                value={form.focus}
-                onChange={handleChange}
-                required
-                rows={4}
-                placeholder="e.g. I'm a COO struggling with last-mile delivery costs and trying to integrate AI into our warehouse operations..."
-                onFocus={() => setFocusedField('focus')}
-                onBlur={() => setFocusedField(null)}
-                style={{
-                  ...inputStyle, resize: 'vertical', minHeight: 120,
-                  borderColor: getFocusBorder('focus'),
-                }}
-              />
-              <p style={{ color: 'var(--white-dim)', fontSize: '0.78rem', marginTop: '0.4rem', lineHeight: 1.6 }}>
-                {`💡 The more specific you are, the better we can match you to the right session.`}
-              </p>
-            </div>
+                <p className={styles.smallLabel}>Invitation Draft Ready</p>
 
-            {/* Submit button */}
-            <button
-              type="submit"
-              disabled={status === 'loading'}
-              style={{
-                background: status === 'loading'
-                  ? 'rgba(201,168,76,0.4)'
-                  : 'linear-gradient(135deg, var(--gold-light), var(--gold))',
-                color: 'var(--navy)', padding: '1rem 2rem',
-                border: 'none', borderRadius: '2px',
-                cursor: status === 'loading' ? 'wait' : 'pointer',
-                fontSize: '0.9rem', fontWeight: 500, letterSpacing: '0.08em',
-                textTransform: 'uppercase', fontFamily: 'DM Sans, sans-serif',
-                transition: 'all 0.2s',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem',
-              }}
-            >
-              {status === 'loading' ? (
-                <>
-                  <span style={{
-                    width: 16, height: 16, border: '2px solid var(--navy)',
-                    borderTopColor: 'transparent', borderRadius: '50%',
-                    display: 'inline-block', animation: 'spin 0.8s linear infinite',
-                  }} />
-                  Matching your profile...
-                </>
-              ) : 'Match Me & Send Invitation'}
-            </button>
+                <h3>
+                  Registered, <span>{form.name.split(' ')[0] || 'there'}</span>
+                </h3>
 
-            {status === 'error' && (
-              <p style={{ color: '#e05c5c', textAlign: 'center', fontSize: '0.88rem' }}>
-                Something went wrong. Please make sure the backend is running and try again.
-              </p>
+                <div className={styles.matchedSession}>
+                  <p>Matched Session</p>
+
+                  <h4>
+                    {result.matched_session?.title || 'Best matched session'}
+                  </h4>
+
+                  <span>
+                    {result.matched_session?.time || 'Session time'} ·{' '}
+                    {result.matched_session?.speaker || 'Speaker'}
+                  </span>
+                </div>
+
+                <div className={styles.emailDraft}>
+                  {result.email_draft ||
+                    result.email_body ||
+                    result.invitation_email ||
+                    'The invitation email draft will appear here.'}
+                </div>
+
+                <button
+                  type="button"
+                  className={styles.submitButton}
+                  onClick={resetForm}
+                >
+                  Submit Another
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+            ) : (
+              <>
+                <h3 className={styles.formHeading}>Register Now</h3>
+
+                <form onSubmit={handleSubmit} className={styles.formCard}>
+                  <div className={styles.fieldGroup}>
+                    <label htmlFor="name">
+                      <User size={15} />
+                      Full Name <span>*</span>
+                    </label>
+
+                    <input
+                      id="name"
+                      type="text"
+                      name="name"
+                      value={form.name}
+                      onChange={handleChange}
+                      placeholder="e.g. Sarah Al-Mansoori"
+                      required
+                    />
+                  </div>
+
+                  <div className={styles.fieldGroup}>
+                    <label htmlFor="email">
+                      <Mail size={15} />
+                      Email Address <span>*</span>
+                    </label>
+
+                    <input
+                      id="email"
+                      type="email"
+                      name="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      placeholder="e.g. sarah@company.com"
+                      required
+                    />
+                  </div>
+
+                  <div className={styles.fieldGroup}>
+                    <label>
+                      <BriefcaseBusiness size={15} />
+                      Preferred Session Area <span>*</span>
+                    </label>
+
+                    <div className={styles.filterGrid}>
+                      {sessionFilters.map((item) => (
+                        <button
+                          key={item.id}
+                          type="button"
+                          className={`${styles.filterPill} ${
+                            form.sessionFilter === item.id
+                              ? styles.activeFilterPill
+                              : ''
+                          }`}
+                          onClick={() => handleFilterSelect(item.id)}
+                        >
+                          <strong>{item.label}</strong>
+                          <small>{item.hint}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className={styles.fieldGroup}>
+                    <label htmlFor="focus">
+                      <BriefcaseBusiness size={15} />
+                      Professional Focus / Career Challenge <span>*</span>
+                    </label>
+
+                    <textarea
+                      id="focus"
+                      name="focus"
+                      value={form.focus}
+                      onChange={handleChange}
+                      placeholder="e.g. I want to use AI to improve warehouse visibility and reduce logistics delays."
+                      required
+                      rows={5}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className={styles.submitButton}
+                    disabled={status === 'loading'}
+                  >
+                    Submit
+                    <ArrowRight size={18} />
+                  </button>
+
+                  {status === 'error' && (
+                    <p className={styles.errorMessage}>
+                      Backend is not running yet. Once FastAPI is connected, the
+                      invitation draft will appear here.
+                    </p>
+                  )}
+                </form>
+              </>
             )}
-          </div>
+          </motion.div>
 
-          <p style={{
-            color: 'var(--white-dim)', fontSize: '0.75rem', textAlign: 'center',
-            marginTop: '1.5rem', lineHeight: 1.7,
-          }}>
-            By registering you agree to Cogent Solutions&trade; sharing your contact
-            details with sponsors in accordance with GDPR guidelines.
-          </p>
-        </form>
+          <div className={styles.verticalDivider} />
+
+          <motion.div
+            className={styles.logoPanel}
+            initial={{ opacity: 0, x: 70 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: false, amount: 0.25 }}
+            transition={{
+              duration: 0.75,
+              ease: [0.16, 1, 0.3, 1],
+              delay: 0.12,
+            }}
+          >
+            <p className={styles.logoKicker}>Supply Chain & Logistics</p>
+
+            <div className={styles.accelalphaWrap}>
+              <Image
+                src="/images/accelalpha-logo.png"
+                alt="Accelalpha logo"
+                width={540}
+                height={170}
+                className={styles.accelalphaLogo}
+              />
+            </div>
+
+            <div className={styles.oracleRow}>
+              <div className={styles.oracleLogoWrap}>
+                <Image
+                  src="/images/oracle-logo.png"
+                  alt="Oracle logo"
+                  width={155}
+                  height={50}
+                  className={styles.oracleLogo}
+                />
+              </div>
+
+              <span />
+
+              <p>Partner</p>
+            </div>
+          </motion.div>
+        </div>
       </div>
-
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </section>
   )
 }

@@ -1,0 +1,554 @@
+.registerSection {
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 0;
+  color: #ffffff;
+  background: var(--navy);
+}
+
+.bgGlowLeft,
+.bgGlowRight {
+  display: none;
+}
+
+.bgGlowLeft {
+  width: 320px;
+  height: 320px;
+  left: -120px;
+  top: 180px;
+  background: rgba(216, 185, 85, 0.08);
+}
+
+.bgGlowRight {
+  width: 360px;
+  height: 360px;
+  right: -120px;
+  bottom: 100px;
+  background: rgba(34, 211, 238, 0.08);
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.sectionIntro {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.sectionKicker {
+  color: var(--gold);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-family: 'DM Mono', monospace;
+  display: block;
+  margin: 0 0 1rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: var(--white);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.sectionTitle em {
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 600;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  align-items: stretch;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.formPanel,
+.logoPanel {
+  padding: 52px 52px 48px;
+}
+
+.verticalDivider {
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(201, 168, 76, 0.5),
+    transparent
+  );
+}
+.formHeading {
+  margin: 0 0 28px;
+  color:var(--gold);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.08;
+  font-weight: 550;
+  letter-spacing: -0.05em;
+  animation: goldTextGlow 2.8s ease-in-out infinite;
+}
+
+@keyframes goldTextGlow {
+  0%,
+  100% {
+    text-shadow:
+      0 0 8px rgba(216, 185, 85, 0.25),
+      0 0 18px rgba(216, 185, 85, 0.16);
+  }
+
+  50% {
+    text-shadow:
+      0 0 12px rgba(216, 185, 85, 0.48),
+      0 0 28px rgba(216, 185, 85, 0.32),
+      0 0 52px rgba(216, 185, 85, 0.2);
+  }
+}
+.formCard,
+.loadingBox,
+.invitationBox {
+  border-radius: 24px;
+  border: 1px solid rgba(216, 185, 85, 0.22);
+  background: rgba(3, 12, 24, 0.42);
+  padding: 28px;
+}
+
+.formCard {
+  display: grid;
+  gap: 18px;
+}
+
+.fieldGroup label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+  color: rgba(255, 255, 255, 0.78);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fieldGroup label span {
+  color: #d8b955;
+}
+
+.fieldGroup input,
+.fieldGroup textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 16px;
+  outline: none;
+  background: rgba(2, 10, 22, 0.88);
+  color: #ffffff;
+  padding: 15px 16px;
+  font-size: 0.96rem;
+  font-family: Arial, Helvetica, sans-serif;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.fieldGroup textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.fieldGroup input::placeholder,
+.fieldGroup textarea::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.fieldGroup input:focus,
+.fieldGroup textarea:focus {
+  border-color: rgba(216, 185, 85, 0.72);
+  background: rgba(4, 14, 28, 0.98);
+  box-shadow:
+    0 0 0 4px rgba(216, 185, 85, 0.08),
+    0 0 22px rgba(216, 185, 85, 0.08);
+}
+
+.filterGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.filterPill {
+  width: 100%;
+  border: 1px solid rgba(216, 185, 85, 0.18);
+  border-radius: 16px;
+  background: rgba(2, 10, 22, 0.68);
+  color: rgba(255, 255, 255, 0.68);
+  padding: 13px 14px;
+  text-align: left;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.filterPill strong {
+  display: block;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  margin-bottom: 5px;
+}
+
+.filterPill small {
+  display: block;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.filterPill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(216, 185, 85, 0.45);
+  background: rgba(7, 18, 36, 0.9);
+}
+
+.activeFilterPill {
+  border-color: rgba(216, 185, 85, 0.82);
+  background:
+    linear-gradient(135deg, rgba(216, 185, 85, 0.16), rgba(216, 185, 85, 0.04)),
+    rgba(7, 18, 36, 0.92);
+  box-shadow:
+    0 0 0 3px rgba(216, 185, 85, 0.07),
+    0 14px 32px rgba(0, 0, 0, 0.18);
+}
+
+.activeFilterPill strong {
+  color: #d8b955;
+}
+
+.submitButton {
+  width: fit-content;
+  min-width: 144px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 14px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #f1d36d, #c9a84c);
+  color: #071529;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 16px 40px rgba(201, 168, 76, 0.22);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.submitButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 48px rgba(201, 168, 76, 0.28);
+}
+
+.submitButton:disabled {
+  opacity: 0.65;
+  cursor: wait;
+  transform: none;
+}
+
+.errorMessage {
+  margin: 0;
+  color: #ffaaaa;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.logoPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoKicker {
+  margin: 0 0 30px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: clamp(1.45rem, 2.2vw, 2.4rem);
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+
+.accelalphaWrap {
+  width: min(88%, 530px);
+  margin-bottom: 34px;
+}
+
+.accelalphaLogo,
+.oracleLogo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.oracleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.oracleLogoWrap {
+  width: 145px;
+}
+
+.oracleRow span {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.oracleRow p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.loadingBox,
+.invitationBox {
+  min-height: 430px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.loadingBox h3,
+.invitationBox h3 {
+  margin: 18px 0 0;
+  color: #f3f0ea;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.7rem, 2.5vw, 2.5rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.loadingBox p {
+  margin: 16px 0 0;
+  max-width: 500px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.seaLoader {
+  position: relative;
+  width: 122px;
+  height: 88px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(34, 211, 238, 0.08), rgba(34, 211, 238, 0.02));
+  border: 1px solid rgba(34, 211, 238, 0.18);
+}
+
+.shipIcon {
+  position: absolute;
+  left: 39px;
+  top: 18px;
+  color: #d8b955;
+  z-index: 3;
+  animation: shipFloat 1.8s ease-in-out infinite;
+}
+
+.wave {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(34, 211, 238, 0.18);
+}
+
+.waveOne {
+  bottom: -12px;
+  animation: waveMove 2.2s linear infinite;
+}
+
+.waveTwo {
+  bottom: -20px;
+  opacity: 0.7;
+  animation: waveMove 3s linear infinite reverse;
+}
+
+.successMark {
+  width: 62px;
+  height: 62px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(216, 185, 85, 0.12);
+  color: #d8b955;
+  margin-bottom: 20px;
+}
+
+.smallLabel {
+  margin: 0;
+  color: #d8b955;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.invitationBox h3 span {
+  color: #d8b955;
+}
+
+.matchedSession {
+  margin-top: 24px;
+  border-radius: 22px;
+  padding: 20px;
+  background: rgba(4, 12, 25, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.matchedSession p {
+  margin: 0;
+  color: #d8b955;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.matchedSession h4 {
+  margin: 10px 0 0;
+  color: #ffffff;
+  font-size: 1.12rem;
+  line-height: 1.35;
+  letter-spacing: -0.035em;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.matchedSession span {
+  display: block;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.emailDraft {
+  margin-top: 16px;
+  max-height: 240px;
+  overflow-y: auto;
+  border-radius: 22px;
+  padding: 20px;
+  white-space: pre-wrap;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  background: rgba(4, 12, 25, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes shipFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(3deg);
+  }
+}
+
+@keyframes waveMove {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(24%);
+  }
+}
+
+@media (max-width: 980px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .verticalDivider {
+    width: 100%;
+    height: 1px;
+  }
+
+  .formPanel,
+  .logoPanel {
+    padding: 36px 28px;
+  }
+}
+
+@media (max-width: 680px) {
+  .registerSection {
+    padding: 80px 18px 70px;
+  }
+
+  .sectionIntro {
+    margin-bottom: 40px;
+  }
+
+  .formPanel,
+  .logoPanel {
+    padding: 28px 22px;
+  }
+
+  .formCard,
+  .loadingBox,
+  .invitationBox {
+    padding: 22px;
+  }
+
+  .filterGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .oracleLogoWrap {
+    width: 118px;
+  }
+}
