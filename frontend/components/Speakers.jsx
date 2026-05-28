@@ -102,6 +102,26 @@ export default function Speakers() {
             Industry Leaders &{' '}
             <em style={{ color: 'var(--gold)' }}>Visionaries</em>
           </h2>
+
+          <motion.div
+            initial={{ width: 0, opacity: 0 }}
+            whileInView={{ width: 92, opacity: 1 }}
+            viewport={{ once: false, amount: 0.45 }}
+            transition={{
+              duration: 0.75,
+              ease: [0.16, 1, 0.3, 1],
+              delay: 0.15,
+            }}
+            style={{
+              height: '2px',
+              margin: '1.25rem auto 0',
+              borderRadius: '999px',
+              background:
+                'linear-gradient(90deg, transparent, var(--gold), transparent)',
+              boxShadow:
+                '0 0 12px rgba(201, 168, 76, 0.38), 0 0 28px rgba(201, 168, 76, 0.16)',
+            }}
+          />
         </motion.div>
 
         <div
