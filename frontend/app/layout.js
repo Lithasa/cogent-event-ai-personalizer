@@ -1,21 +1,19 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
+import './globals.css'
 
 export const metadata = {
-  title: "Cogent Event AI Personalizer",
-  description:
-    "AI-powered event session personalizer for Cogent Solutions Full-Stack Intern Assessment.",
-};
+  title: 'Troubled Waters: Sailing with AI in Supply Chain',
+  description: 'An exclusive executive summit by Accelalpha & Oracle exploring AI-powered supply chain transformation in the Gulf region.',
+  openGraph: {
+    title: 'Troubled Waters: Sailing with AI in Supply Chain',
+    description: 'Join industry leaders at the Marriott Resort, The Palm on 13th November 2024.',
+    type: 'website',
+  },
+}
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.variable}>{children}</body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
-  );
+  )
 }
