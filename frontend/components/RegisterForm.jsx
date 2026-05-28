@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowRight,
   BriefcaseBusiness,
   CheckCircle2,
+  ChevronDown,
   Mail,
   Ship,
   User,
@@ -71,6 +72,11 @@ export default function RegisterForm() {
 
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState(null)
+  const [isSessionMenuOpen, setIsSessionMenuOpen] = useState(false)
+
+  const selectedSession =
+    sessionFilters.find((item) => item.id === form.sessionFilter) ||
+    sessionFilters[0]
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -81,23 +87,12 @@ export default function RegisterForm() {
     }))
   }
 
-  const handleFilterSelect = (filterId) => {
-    setForm((prev) => ({
-      ...prev,
-      sessionFilter: filterId,
-    }))
-  }
-
   const handleSubmit = async (event) => {
     event.preventDefault()
 
     if (!form.name.trim() || !form.email.trim() || !form.focus.trim()) {
       return
     }
-
-    const selectedSession =
-      sessionFilters.find((item) => item.id === form.sessionFilter) ||
-      sessionFilters[0]
 
     setStatus('loading')
     setResult(null)
@@ -138,6 +133,7 @@ export default function RegisterForm() {
 
     setResult(null)
     setStatus('idle')
+    setIsSessionMenuOpen(false)
   }
 
   return (
@@ -268,27 +264,79 @@ export default function RegisterForm() {
                   </div>
 
                   <div className={styles.fieldGroup}>
-                    <label>
+                    <label htmlFor="sessionPreference">
                       <BriefcaseBusiness size={15} />
                       Preferred Session Area <span>*</span>
                     </label>
 
-                    <div className={styles.filterGrid}>
-                      {sessionFilters.map((item) => (
-                        <button
-                          key={item.id}
-                          type="button"
-                          className={`${styles.filterPill} ${
-                            form.sessionFilter === item.id
-                              ? styles.activeFilterPill
+                    <div className={styles.sessionDropdown}>
+                      <button
+                        id="sessionPreference"
+                        type="button"
+                        className={`${styles.sessionDropdownButton} ${
+                          isSessionMenuOpen
+                            ? styles.sessionDropdownButtonOpen
+                            : ''
+                        }`}
+                        onClick={() =>
+                          setIsSessionMenuOpen((current) => !current)
+                        }
+                        aria-expanded={isSessionMenuOpen}
+                      >
+                        <span className={styles.sessionDropdownText}>
+                          <strong>{selectedSession.label}</strong>
+                          <small>{selectedSession.hint}</small>
+                        </span>
+
+                        <ChevronDown
+                          size={20}
+                          className={`${styles.sessionDropdownIcon} ${
+                            isSessionMenuOpen
+                              ? styles.sessionDropdownIconOpen
                               : ''
                           }`}
-                          onClick={() => handleFilterSelect(item.id)}
-                        >
-                          <strong>{item.label}</strong>
-                          <small>{item.hint}</small>
-                        </button>
-                      ))}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {isSessionMenuOpen && (
+                          <motion.div
+                            className={styles.sessionDropdownMenu}
+                            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                            transition={{ duration: 0.22, ease: 'easeOut' }}
+                          >
+                            {sessionFilters.map((item) => {
+                              const isActive = form.sessionFilter === item.id
+
+                              return (
+                                <button
+                                  key={item.id}
+                                  type="button"
+                                  className={`${
+                                    styles.sessionDropdownOption
+                                  } ${
+                                    isActive
+                                      ? styles.sessionDropdownOptionActive
+                                      : ''
+                                  }`}
+                                  onClick={() => {
+                                    setForm((current) => ({
+                                      ...current,
+                                      sessionFilter: item.id,
+                                    }))
+                                    setIsSessionMenuOpen(false)
+                                  }}
+                                >
+                                  <strong>{item.label}</strong>
+                                  <small>{item.hint}</small>
+                                </button>
+                              )
+                            })}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </div>
 
