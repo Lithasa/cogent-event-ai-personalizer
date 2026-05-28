@@ -154,6 +154,18 @@ export default function RegisterForm() {
           <h2 className={styles.sectionTitle}>
             Let’s get your <em>seat secured</em>
           </h2>
+
+          <motion.div
+            className={styles.goldUnderline}
+            initial={{ width: 0, opacity: 0 }}
+            whileInView={{ width: 92, opacity: 1 }}
+            viewport={{ once: false, amount: 0.45 }}
+            transition={{
+              duration: 0.75,
+              ease: [0.16, 1, 0.3, 1],
+              delay: 0.15,
+            }}
+          />
         </motion.div>
 
         <div className={styles.mainGrid}>
