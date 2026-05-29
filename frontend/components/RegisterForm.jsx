@@ -9,13 +9,16 @@ import {
   CheckCircle2,
   ChevronDown,
   Mail,
+  Printer,
   Ship,
   User,
 } from 'lucide-react'
 import styles from './RegisterForm.module.css'
 
 const BACKEND_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  'http://localhost:8000'
 
 const sessionFilters = [
   {
@@ -72,11 +75,15 @@ export default function RegisterForm() {
 
   const [status, setStatus] = useState('idle')
   const [result, setResult] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
   const [isSessionMenuOpen, setIsSessionMenuOpen] = useState(false)
 
   const selectedSession =
     sessionFilters.find((item) => item.id === form.sessionFilter) ||
     sessionFilters[0]
+
+  const matchedSession = result?.matched_session
+  const visitorFocusSummary = `Selected area: ${selectedSession.label}. Related keywords: ${selectedSession.keywords}. Visitor challenge: ${form.focus}`
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -91,11 +98,13 @@ export default function RegisterForm() {
     event.preventDefault()
 
     if (!form.name.trim() || !form.email.trim() || !form.focus.trim()) {
+      setErrorMessage('Please fill in your name, email, and professional focus.')
       return
     }
 
     setStatus('loading')
     setResult(null)
+    setErrorMessage('')
 
     try {
       const response = await fetch(`${BACKEND_URL}/match`, {
@@ -104,14 +113,18 @@ export default function RegisterForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          professional_focus: `${selectedSession.label}. ${selectedSession.keywords}. ${form.focus}`,
+          name: form.name.trim(),
+          email: form.email.trim(),
+          professionalFocus: visitorFocusSummary,
         }),
       })
 
       if (!response.ok) {
-        throw new Error('Backend request failed')
+        const errorData = await response.json().catch(() => null)
+        throw new Error(
+          errorData?.detail ||
+            `Backend request failed with status ${response.status}`
+        )
       }
 
       const data = await response.json()
@@ -119,6 +132,10 @@ export default function RegisterForm() {
       setStatus('success')
     } catch (error) {
       console.error(error)
+      setErrorMessage(
+        error.message ||
+          'Backend is not reachable. Please check that FastAPI is running on port 8000.'
+      )
       setStatus('error')
     }
   }
@@ -133,7 +150,12 @@ export default function RegisterForm() {
 
     setResult(null)
     setStatus('idle')
+    setErrorMessage('')
     setIsSessionMenuOpen(false)
+  }
+
+  const handlePrintInvitation = () => {
+    window.print()
   }
 
   return (
@@ -195,46 +217,91 @@ export default function RegisterForm() {
                   session and generating your invitation draft.
                 </p>
               </div>
-            ) : status === 'success' && result ? (
+            ) : status === 'success' && result && matchedSession ? (
               <div className={styles.invitationBox}>
-                <div className={styles.successMark}>
-                  <CheckCircle2 size={30} />
+                <p className={styles.smallLabel}>Invitation Ready</p>
+
+                <div className={styles.successHeader}>
+                  <div className={styles.registeredBadge}>
+                    <CheckCircle2 size={18} />
+                    <span>Registered</span>
+                  </div>
+
+                  <h3 className={styles.registeredName}>{form.name}</h3>
                 </div>
-
-                <p className={styles.smallLabel}>Invitation Draft Ready</p>
-
-                <h3>
-                  Registered, <span>{form.name.split(' ')[0] || 'there'}</span>
-                </h3>
 
                 <div className={styles.matchedSession}>
                   <p>Matched Session</p>
 
-                  <h4>
-                    {result.matched_session?.title || 'Best matched session'}
-                  </h4>
+                  <h4>{matchedSession.title}</h4>
 
-                  <span>
-                    {result.matched_session?.time || 'Session time'} ·{' '}
-                    {result.matched_session?.speaker || 'Speaker'}
-                  </span>
+                  <div className={styles.matchedMeta}>
+                    <span>{matchedSession.time}</span>
+                    <span>{matchedSession.speaker}</span>
+                  </div>
                 </div>
 
                 <div className={styles.emailDraft}>
-                  {result.email_draft ||
-                    result.email_body ||
-                    result.invitation_email ||
-                    'The invitation email draft will appear here.'}
+                  <p>
+                    Hi <strong>{form.name}</strong>,
+                  </p>
+
+                  <p>
+                    Thank you for your interest in{' '}
+                    <strong>Troubled Waters: Sailing with AI in Supply Chain</strong>.
+                  </p>
+
+                  <p className={styles.invitationFocus}>
+                    Based on your focus around “{visitorFocusSummary}”
+                  </p>
+
+                  <p>
+                    The session we would personally highlight for you is{' '}
+                    <strong className={styles.highlight}>“{matchedSession.title}”</strong>{' '}
+                    scheduled for <strong>{matchedSession.time}</strong>. This
+                    session will be led by <strong>{matchedSession.speaker}</strong>{' '}
+                    and is especially relevant because it covers{' '}
+                    <strong>{matchedSession.focus_keywords?.join(', ')}</strong>.
+                  </p>
+
+                  <p>
+                    The agenda describes this session as:{' '}
+                    <strong>{matchedSession.description}</strong>
+                  </p>
+
+                  <p>
+                    We would be pleased to welcome you to the event and help you
+                    connect your current priorities with the most relevant supply
+                    chain, logistics, automation, and AI discussions from the
+                    programme.
+                  </p>
+
+                  <p>
+                    Best regards,
+                    <br />
+                    <strong>Cogent Solutions Event Team</strong>
+                  </p>
                 </div>
 
-                <button
-                  type="button"
-                  className={styles.submitButton}
-                  onClick={resetForm}
-                >
-                  Submit Another
-                  <ArrowRight size={18} />
-                </button>
+                <div className={styles.actionRow}>
+                  <button
+                    type="button"
+                    className={styles.secondaryButton}
+                    onClick={handlePrintInvitation}
+                  >
+                    <Printer size={17} />
+                    Print Invitation
+                  </button>
+
+                  <button
+                    type="button"
+                    className={styles.submitButton}
+                    onClick={resetForm}
+                  >
+                    Register Another
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
               </div>
             ) : (
               <>
@@ -253,7 +320,7 @@ export default function RegisterForm() {
                       name="name"
                       value={form.name}
                       onChange={handleChange}
-                      placeholder="e.g. Sarah Al-Mansoori"
+                      placeholder="e.g. Lithasa Jayamaha"
                       required
                     />
                   </div>
@@ -270,7 +337,7 @@ export default function RegisterForm() {
                       name="email"
                       value={form.email}
                       onChange={handleChange}
-                      placeholder="e.g. sarah@company.com"
+                      placeholder="e.g. lithasajay@company.com"
                       required
                     />
                   </div>
@@ -374,15 +441,12 @@ export default function RegisterForm() {
                     className={styles.submitButton}
                     disabled={status === 'loading'}
                   >
-                    Submit
+                    Register
                     <ArrowRight size={18} />
                   </button>
 
                   {status === 'error' && (
-                    <p className={styles.errorMessage}>
-                      Backend is not running yet. Once FastAPI is connected, the
-                      invitation draft will appear here.
-                    </p>
+                    <p className={styles.errorMessage}>{errorMessage}</p>
                   )}
                 </form>
               </>

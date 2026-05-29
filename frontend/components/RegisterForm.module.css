@@ -14,7 +14,7 @@
 .container {
   position: relative;
   z-index: 2;
-  max-width: 1500px;
+  max-width: 2000px;
   margin: 0 auto;
   padding: 0 2rem;
 }
@@ -92,7 +92,7 @@
   font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(2rem, 3vw, 3rem);
   line-height: 1.08;
-  font-weight: 550;
+  font-weight: 500;
   letter-spacing: -0.05em;
   animation: goldTextGlow 2.8s ease-in-out infinite;
 }
@@ -634,4 +634,344 @@
   .oracleLogoWrap {
     width: 118px;
   }
+}
+
+/* ================================
+   Success / invitation UI polish
+   Added for backend result screen only.
+   Existing form, dropdown, logo and layout styles are unchanged above.
+================================ */
+
+.invitationBox {
+  justify-content: flex-start;
+}
+
+.invitationBox .smallLabel {
+  color: rgba(241, 211, 109, 0.92);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.successHeader {
+  margin-top: 22px;
+  margin-bottom: 28px;
+}
+
+.registeredBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 7px 13px;
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  color: #66e7ad;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.registeredName {
+  margin: 12px 0 0;
+  color: #f3f0ea;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.3rem, 4vw, 4.2rem);
+  line-height: 1.02;
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  text-transform: capitalize;
+}
+
+.matchedSession {
+  margin-top: 0;
+  padding: 22px 24px;
+}
+
+.matchedSession p {
+  margin: 0;
+  color: rgba(241, 211, 109, 0.86);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.matchedSession h4 {
+  margin: 11px 0 0;
+  color: #ffffff;
+  font-size: 1.12rem;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 750;
+}
+
+.matchedMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 9px;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.matchedMeta span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.matchedMeta span + span::before {
+  content: '•';
+  margin-right: 14px;
+  color: rgba(241, 211, 109, 0.72);
+}
+
+.emailDraft {
+  margin-top: 22px;
+  max-height: 430px;
+  padding: 24px 26px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.93rem;
+  line-height: 1.78;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.emailDraft p {
+  margin: 0 0 16px;
+}
+
+.emailDraft p:last-child {
+  margin-bottom: 0;
+}
+
+.emailDraft strong {
+  color: rgba(255, 255, 255, 0.94);
+  font-weight: 800;
+}
+
+.highlight {
+  color: #f1d36d !important;
+  font-weight: 850;
+}
+
+.invitationFocus {
+  border-left: 3px solid rgba(241, 211, 109, 0.68);
+  border-radius: 12px;
+  padding: 13px 15px;
+  background: rgba(241, 211, 109, 0.07);
+  color: rgba(255, 255, 255, 0.82);
+  font-style: italic;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.secondaryButton {
+  width: fit-content;
+  min-width: 164px;
+  border: 1px solid rgba(216, 185, 85, 0.38);
+  outline: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 14px 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(216, 185, 85, 0.08);
+  color: #f1d36d;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.secondaryButton:hover {
+  transform: translateY(-3px);
+  background: rgba(216, 185, 85, 0.14);
+  border-color: rgba(216, 185, 85, 0.72);
+}
+
+@media (max-width: 680px) {
+  .registeredName {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .emailDraft {
+    max-height: 390px;
+    padding: 20px;
+    font-size: 0.88rem;
+  }
+
+  .actionRow {
+    align-items: stretch;
+  }
+
+  .actionRow .submitButton,
+  .secondaryButton {
+    width: 100%;
+  }
+
+  .matchedMeta {
+    display: block;
+  }
+
+  .matchedMeta span {
+    display: block;
+  }
+
+  .matchedMeta span + span::before {
+    content: '';
+    margin-right: 0;
+  }
+}
+
+@media print {
+  .registerSection {
+    padding: 0;
+    color: #111827;
+    background: #ffffff;
+  }
+
+  .sectionIntro,
+  .verticalDivider,
+  .logoPanel,
+  .actionRow,
+  .bgGlowLeft,
+  .bgGlowRight {
+    display: none !important;
+  }
+
+  .container,
+  .mainGrid,
+  .formPanel,
+  .invitationBox,
+  .matchedSession,
+  .emailDraft {
+    width: 100% !important;
+    max-width: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  .mainGrid {
+    display: block;
+  }
+
+  .formPanel,
+  .invitationBox {
+    padding: 0 !important;
+  }
+
+  .smallLabel,
+  .matchedSession p,
+  .highlight,
+  .emailDraft strong,
+  .registeredName,
+  .registeredBadge {
+    color: #111827 !important;
+  }
+
+  .emailDraft {
+    max-height: none;
+    overflow: visible;
+    padding: 0 !important;
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+}
+
+
+
+.fieldGroup input,
+.fieldGroup textarea {
+  background:
+    linear-gradient(135deg, rgba(216, 185, 85, 0.04), rgba(216, 185, 85, 0.015)),
+    rgba(2, 10, 22, 0.88) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(216, 185, 85, 0.24) !important;
+}
+
+
+.fieldGroup input:-webkit-autofill,
+.fieldGroup input:-webkit-autofill:hover,
+.fieldGroup input:-webkit-autofill:focus,
+.fieldGroup textarea:-webkit-autofill,
+.fieldGroup textarea:-webkit-autofill:hover,
+.fieldGroup textarea:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff !important;
+  box-shadow: 0 0 0 1000px rgba(2, 10, 22, 0.96) inset !important;
+  border: 1px solid rgba(216, 185, 85, 0.28) !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+
+.fieldGroup input::placeholder,
+.fieldGroup textarea::placeholder {
+  color: rgba(255, 255, 255, 0.42) !important;
+}
+
+
+.emailDraft,
+.emailDraft p {
+  font-weight: 400 !important;
+  color: rgba(255, 255, 255, 0.76) !important;
+  line-height: 1.8 !important;
+}
+
+
+.emailDraft strong,
+.emailDraft b,
+.invitationBox strong,
+.invitationBox b {
+  font-weight: 650 !important;
+  color: #f0d263 !important;
+}
+
+.emailDraft .softBold,
+.invitationBox .softBold {
+  font-weight: 600 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+
+.emailDraft blockquote,
+.focusQuote {
+  font-weight: 400 !important;
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+
+
+.invitationActions,
+.invitationBoxActions {
+  margin-top: 32px !important;
+}
+
+/*  buttons are directly after emailDraft */
+.emailDraft + .submitButton,
+.emailDraft + div,
+.emailDraft + button {
+  margin-top: 28px !important;
 }
