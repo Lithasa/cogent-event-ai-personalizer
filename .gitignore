@@ -13,9 +13,10 @@ frontend/.env.local
 .env.development
 
 # Python backend
+backend/.env
 backend/.venv/
 backend/__pycache__/
-backend/.env
+backend/**/*.pyc
 
 # Logs
 *.log
