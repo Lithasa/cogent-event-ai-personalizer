@@ -1,10 +1,10 @@
 # Dependencies
 node_modules/
 
-# Next.js
-.next/
-out/
-.vercel/
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
 
 # Environment files
 .env
@@ -12,11 +12,10 @@ out/
 .env.production
 .env.development
 
-# Python
-__pycache__/
-*.pyc
-venv/
-.venv/
+# Python backend
+backend/.venv/
+backend/__pycache__/
+backend/.env
 
 # Logs
 *.log
