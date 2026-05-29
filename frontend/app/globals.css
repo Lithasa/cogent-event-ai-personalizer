@@ -17,7 +17,9 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   background: var(--navy);
@@ -44,8 +46,30 @@ body::before {
 }
 
 .gold { color: var(--gold); }
+
 .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
 .section { padding: 6rem 0; position: relative; z-index: 1; }
+
+#about,
+#speakers,
+#agenda,
+#register {
+  scroll-margin-top: 110px;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 92px;
+  }
+
+  #about,
+  #speakers,
+  #agenda,
+  #register {
+    scroll-margin-top: 92px;
+  }
+}
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(30px); }
@@ -66,4 +90,467 @@ body::before {
 @keyframes pulse-ring {
   0% { transform: scale(1); opacity: 0.6; }
   100% { transform: scale(1.4); opacity: 0; }
+}
+
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+
+#about,
+#speakers,
+#agenda,
+#register {
+  scroll-margin-top: 110px;
+}
+
+/* Premium glass navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 16px clamp(14px, 3vw, 40px);
+  pointer-events: none;
+  transition: padding 0.35s ease;
+}
+
+.navShell {
+  width: 100%;
+  max-width: 1820px;
+  height: 76px;
+  margin: 0 auto;
+  padding: 0 clamp(18px, 3vw, 38px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)),
+    rgba(6, 15, 29, 0.72);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow:
+    0 26px 80px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  pointer-events: auto;
+  transition:
+    height 0.35s ease,
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.navbarScrolled {
+  padding-top: 10px;
+}
+
+.navbarScrolled .navShell {
+  height: 68px;
+  border-color: rgba(201, 168, 76, 0.2);
+  background:
+    linear-gradient(135deg, rgba(201, 168, 76, 0.08), rgba(255, 255, 255, 0.025)),
+    rgba(6, 15, 29, 0.9);
+  box-shadow:
+    0 22px 70px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.brandLogos {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.accelLogo {
+  width: clamp(118px, 10vw, 160px);
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.oracleLogo {
+  width: clamp(96px, 8vw, 136px);
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.logoDivider {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(201, 168, 76, 0.6),
+    transparent
+  );
+}
+
+.desktopNav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(24px, 3vw, 44px);
+  margin-left: auto;
+}
+
+.navLink {
+  position: relative;
+  color: rgba(244, 241, 234, 0.78);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+  opacity: 0.85;
+}
+
+.navLink:hover {
+  color: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
+}
+
+.registerButton,
+.mobileRegister,
+.panelRegister {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.registerButton {
+  color: var(--navy);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  padding: 0.82rem 1.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  box-shadow:
+    0 14px 34px rgba(201, 168, 76, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.registerButton:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+  box-shadow:
+    0 18px 44px rgba(201, 168, 76, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+}
+
+.mobileActions {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.mobileRegister {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  color: var(--navy);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  font-size: 0.68rem;
+  white-space: nowrap;
+  box-shadow: 0 10px 28px rgba(201, 168, 76, 0.18);
+}
+
+.menuButton {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(201, 168, 76, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.menuButton span {
+  width: 17px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--gold-light);
+  transition:
+    transform 0.25s ease,
+    opacity 0.2s ease;
+}
+
+.menuButtonOpen span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menuButtonOpen span:nth-child(2) {
+  opacity: 0;
+}
+
+.menuButtonOpen span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobileOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.32s ease;
+}
+
+.mobileOverlayOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobilePanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  width: min(84vw, 380px);
+  height: 100vh;
+  padding: 104px 24px 28px;
+  background:
+    radial-gradient(circle at 30% 0%, rgba(201, 168, 76, 0.12), transparent 36%),
+    linear-gradient(180deg, rgba(8, 20, 38, 0.98), rgba(5, 13, 25, 0.96));
+  border-left: 1px solid rgba(201, 168, 76, 0.18);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: -30px 0 90px rgba(0, 0, 0, 0.4);
+  transform: translateX(110%);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mobilePanelOpen {
+  transform: translateX(0);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.panelHeader button {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.panelLinks {
+  display: grid;
+  gap: 14px;
+}
+
+.panelLinks a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 62px;
+  padding: 0 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--white);
+  text-decoration: none;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.22rem;
+  transform: translateX(22px);
+  opacity: 0;
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.mobilePanelOpen .panelLinks a {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.panelLinks a:hover {
+  border-color: rgba(201, 168, 76, 0.35);
+  background: rgba(201, 168, 76, 0.08);
+}
+
+.panelLinks a span {
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+}
+
+.panelRegister {
+  color: var(--navy) !important;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold)) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.92rem !important;
+}
+
+.panelRegister span {
+  color: rgba(10, 22, 40, 0.72) !important;
+}
+
+@media (max-width: 980px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .mobileActions {
+    display: flex;
+  }
+
+  .navShell {
+    height: 70px;
+    padding: 0 16px;
+  }
+
+  .navbarScrolled .navShell {
+    height: 66px;
+  }
+}
+
+@media (max-width: 560px) {
+  html {
+    scroll-padding-top: 92px;
+  }
+
+  #about,
+  #speakers,
+  #agenda,
+  #register {
+    scroll-margin-top: 92px;
+  }
+
+  .navbar {
+    padding: 10px;
+  }
+
+  .navShell {
+    height: 64px;
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .navbarScrolled {
+    padding-top: 8px;
+  }
+
+  .navbarScrolled .navShell {
+    height: 62px;
+  }
+
+  .brandLogos {
+    gap: 8px;
+  }
+
+  .accelLogo {
+    width: 88px;
+  }
+
+  .oracleLogo {
+    width: 68px;
+  }
+
+  .logoDivider {
+    height: 22px;
+  }
+
+  .mobileRegister {
+    min-height: 36px;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+
+  .menuButton {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mobilePanel {
+    width: min(88vw, 360px);
+    padding-top: 94px;
+  }
+}
+
+@media (max-width: 380px) {
+  .accelLogo {
+    width: 78px;
+  }
+
+  .oracleLogo {
+    width: 58px;
+  }
+
+  .mobileRegister {
+    padding-inline: 0.58rem;
+    font-size: 0.56rem;
+  }
+
+  .menuButton {
+    width: 36px;
+    height: 36px;
+  }
 }
