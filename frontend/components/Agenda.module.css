@@ -2,7 +2,7 @@
   position: relative;
   overflow: hidden;
   background: var(--navy);
-  padding: 4rem 0 4.2rem;
+  padding: 5.6rem 0 4.2rem;
   color: var(--white);
 }
 
@@ -325,7 +325,7 @@
 
 @media (max-width: 560px) {
   .agendaSection {
-    padding: 4rem 0 4.2rem;
+    padding: 5.4rem 0 4.2rem;
   }
 
   .agendaContainer {
@@ -353,5 +353,309 @@
     width: 34px;
     height: 34px;
     font-size: 0.72rem;
+  }
+}
+/* Mobile polish: compact divider stats area + clearer agenda items */
+@media (max-width: 820px) {
+  .agendaSection {
+    padding-top: 6.7rem;
+  }
+
+  .agendaHeader {
+    margin-bottom: 2.2rem;
+  }
+
+  .agendaHeader span {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.7rem;
+  }
+
+  .agendaHeader h2 {
+    font-size: clamp(1.85rem, 9vw, 2.55rem);
+  }
+
+  .filterBar {
+    gap: 0.5rem;
+    margin-bottom: 2.45rem;
+  }
+
+  .filterButton {
+    padding: 0.48rem 0.9rem;
+    font-size: 0.68rem;
+  }
+
+  .timelineWrap {
+    max-width: 100%;
+  }
+
+  .timelineLine {
+    left: 21px;
+  }
+
+  .timelineItem {
+    grid-template-columns: 48px 1fr;
+    margin-bottom: 1.25rem;
+    min-height: auto;
+  }
+
+  .timelineDot {
+    width: 30px;
+    height: 30px;
+    font-size: 0.64rem;
+    margin-top: 0.62rem;
+  }
+
+  .timelineContent {
+    padding: 0.9rem 0.95rem 0.95rem;
+    border: 1px solid rgba(201, 168, 76, 0.16);
+    border-radius: 14px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015)),
+      rgba(8, 20, 38, 0.58);
+    box-shadow:
+      0 16px 34px rgba(0, 0, 0, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .sessionTime {
+    font-size: 0.72rem;
+    margin-bottom: 0.45rem;
+    gap: 0.38rem;
+  }
+
+  .sessionTime svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .timelineContent h3 {
+    font-size: clamp(1.05rem, 5vw, 1.34rem);
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+
+  .sessionSpeaker {
+    margin-top: 0.45rem;
+    font-size: 0.74rem;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 560px) {
+  .agendaSection {
+    padding: 6.4rem 0 4.2rem;
+  }
+
+  .agendaContainer {
+    padding: 0 1.1rem;
+  }
+
+  .agendaHeader {
+    margin-bottom: 2.15rem;
+  }
+
+  .filterBar {
+    margin-bottom: 2.35rem;
+  }
+
+  .timelineLine {
+    left: 20px;
+  }
+
+  .timelineItem {
+    grid-template-columns: 46px 1fr;
+    margin-bottom: 1.18rem;
+  }
+
+  .timelineDot {
+    width: 30px;
+    height: 30px;
+    font-size: 0.62rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .agendaContainer {
+    padding: 0 0.95rem;
+  }
+
+  .timelineContent {
+    padding: 0.82rem 0.82rem 0.9rem;
+  }
+
+  .timelineContent h3 {
+    font-size: clamp(1rem, 5vw, 1.22rem);
+  }
+
+  .sessionSpeaker {
+    font-size: 0.7rem;
+  }
+
+  .filterButton {
+    padding: 0.45rem 0.78rem;
+    font-size: 0.62rem;
+  }
+}
+/* Mobile agenda refinement:
+   Keep the original timeline style, remove card/tabs around sessions,
+   reduce font size, and add more breathing space between sessions. */
+@media (max-width: 820px) {
+  .timelineItem {
+    margin-bottom: 4rem;
+  }
+
+  .timelineContent {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .timelineContent h3 {
+    font-size: clamp(1.22rem, 5.3vw, 1.65rem);
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+  }
+
+  .sessionTime {
+    font-size: 0.78rem;
+    margin-bottom: 0.48rem;
+    gap: 0.42rem;
+  }
+
+  .sessionTime svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .sessionSpeaker {
+    font-size: 0.78rem;
+    line-height: 1.55;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .timelineItem {
+    grid-template-columns: 52px 1fr;
+    margin-bottom: 4.25rem;
+  }
+
+  .timelineLine {
+    left: 21px;
+  }
+
+  .timelineDot {
+    width: 32px;
+    height: 32px;
+    font-size: 0.68rem;
+  }
+
+  .timelineContent h3 {
+    font-size: clamp(1.16rem, 5.5vw, 1.48rem);
+    line-height: 1.25;
+  }
+
+  .sessionTime {
+    font-size: 0.74rem;
+  }
+
+  .sessionSpeaker {
+    font-size: 0.74rem;
+    line-height: 1.5;
+  }
+}
+/* Final mobile timeline alignment refinement:
+   Align vertical line to the exact centre of the numbered dots,
+   reduce session heading size, and increase spacing between sessions. */
+@media (max-width: 820px) {
+  .timelineWrap {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .timelineLine {
+    left: 27px !important;
+  }
+
+  .timelineItem {
+    grid-template-columns: 54px 1fr !important;
+    margin-bottom: 5rem !important;
+    align-items: flex-start;
+  }
+
+  .timelineDot {
+    justify-self: center;
+    margin-top: 0 !important;
+  }
+
+  .timelineContent h3 {
+    font-size: clamp(1.05rem, 4.8vw, 1.32rem) !important;
+    line-height: 1.26 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .sessionTime {
+    font-size: 0.72rem !important;
+    margin-bottom: 0.42rem !important;
+  }
+
+  .sessionSpeaker {
+    font-size: 0.72rem !important;
+    line-height: 1.5 !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .timelineLine {
+    left: 25px !important;
+  }
+
+  .timelineItem {
+    grid-template-columns: 50px 1fr !important;
+    margin-bottom: 3.25rem !important;
+  }
+
+  .timelineDot {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.66rem !important;
+    justify-self: center;
+  }
+
+  .timelineContent h3 {
+    font-size: clamp(0.98rem, 4.5vw, 1.16rem) !important;
+    line-height: 1.28 !important;
+  }
+
+  .sessionTime {
+    font-size: 0.68rem !important;
+  }
+
+  .sessionTime svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .sessionSpeaker {
+    font-size: 0.68rem !important;
+    line-height: 1.5 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .timelineLine {
+    left: 24px !important;
+  }
+
+  .timelineItem {
+    grid-template-columns: 48px 1fr !important;
+    margin-bottom: 2.4rem !important;
+  }
+
+  .timelineContent h3 {
+    font-size: clamp(0.94rem, 4.4vw, 1.08rem) !important;
   }
 }
