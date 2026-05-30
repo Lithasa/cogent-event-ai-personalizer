@@ -324,6 +324,7 @@ export default function Agenda() {
                       background:  { duration: 0.55, ease: 'easeInOut' },
                       borderColor: { duration: 0.45, ease: 'easeInOut' },
                     }}
+                    
                     viewport={{ once: false, amount: 0.58 }}
                   >
                     {session.id}
