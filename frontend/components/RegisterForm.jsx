@@ -153,7 +153,6 @@ export default function RegisterForm() {
     setIsSessionMenuOpen(false)
   }
 
-
   return (
     <section id="register" className={styles.registerSection}>
       <div className={styles.bgGlowLeft} />

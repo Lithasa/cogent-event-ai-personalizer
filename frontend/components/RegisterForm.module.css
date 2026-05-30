@@ -1,1094 +1,568 @@
-.registerSection {
-  position: relative;
-  overflow: hidden;
-  padding: 2.5rem 0 6rem;
-  color: #ffffff;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --navy: #0a1628;
+  --navy-mid: #112240;
+  --navy-light: #1a3460;
+  --gold: #c9a84c;
+  --gold-light: #e8c878;
+  --gold-dim: #8a6f2e;
+  --white: #f4f1ea;
+  --white-dim: #b8b4aa;
+  --teal: #1e6e7a;
+  --teal-light: #2a9aaa;
+  --card-bg: rgba(17, 34, 64, 0.7);
+  --border: rgba(201, 168, 76, 0.2);
+  --border-strong: rgba(201, 168, 76, 0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  scroll-behavior: smooth;
+}
+
+body {
   background: var(--navy);
-}
-
-.bgGlowLeft,
-.bgGlowRight {
-  display: none;
-}
-
-.container {
-  position: relative;
-  z-index: 2;
-  max-width: 2000px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.sectionIntro {
-  margin-bottom: 4rem;
-  text-align: center;
-}
-
-.sectionKicker {
-  color: var(--gold);
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-family: 'DM Mono', monospace;
-  display: block;
-  margin: 0 0 1rem;
-}
-
-.sectionTitle {
-  margin: 0;
   color: var(--white);
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 600;
-  line-height: 1.15;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
 }
 
-.sectionTitle em {
-  color: var(--gold);
-  font-style: italic;
-  font-weight: 600;
+h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 600; line-height: 1.15; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
 }
 
-.goldUnderline {
-  height: 2px;
-  margin: 1.25rem auto 0;
+.gold { color: var(--gold); }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+.section { padding: 6rem 0; position: relative; z-index: 1; }
+
+#about,
+#speakers,
+#agenda,
+#register {
+  scroll-margin-top: 110px;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 92px;
+  }
+
+  #about,
+  #speakers,
+  #agenda,
+  #register {
+    scroll-margin-top: 92px;
+  }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+
+#about,
+#speakers,
+#agenda,
+#register {
+  scroll-margin-top: 110px;
+}
+
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 16px clamp(14px, 3vw, 40px);
+  pointer-events: none;
+  transition: padding 0.35s ease;
+}
+
+.navShell {
+  width: 100%;
+  max-width: 1820px;
+  height: 76px;
+  margin: 0 auto;
+  padding: 0 clamp(18px, 3vw, 38px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025)),
+    rgba(6, 15, 29, 0.72);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
   box-shadow:
-    0 0 12px rgba(201, 168, 76, 0.38),
-    0 0 28px rgba(201, 168, 76, 0.16);
+    0 26px 80px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  pointer-events: auto;
+  transition:
+    height 0.35s ease,
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
-.mainGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
-  align-items: stretch;
-  border-radius: 0;
-  border: none;
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  overflow: visible;
-  box-shadow: none;
+.navbarScrolled {
+  padding-top: 10px;
 }
 
-.formPanel,
-.logoPanel {
-  padding: 52px 52px 48px;
+.navbarScrolled .navShell {
+  height: 68px;
+  border-color: rgba(201, 168, 76, 0.2);
+  background:
+    linear-gradient(135deg, rgba(201, 168, 76, 0.08), rgba(255, 255, 255, 0.025)),
+    rgba(6, 15, 29, 0.9);
+  box-shadow:
+    0 22px 70px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.verticalDivider {
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.brandLogos {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.accelLogo {
+  width: clamp(118px, 10vw, 160px);
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.oracleLogo {
+  width: clamp(96px, 8vw, 136px);
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.logoDivider {
   width: 1px;
+  height: 28px;
   background: linear-gradient(
     180deg,
     transparent,
-    rgba(201, 168, 76, 0.5),
+    rgba(201, 168, 76, 0.6),
     transparent
   );
 }
 
-.formHeading {
-  margin: 0 0 28px;
-  color: var(--gold);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(2rem, 3vw, 3rem);
-  line-height: 1.08;
-  font-weight: 500;
-  letter-spacing: -0.05em;
-  animation: goldTextGlow 2.8s ease-in-out infinite;
-}
-
-@keyframes goldTextGlow {
-  0%,
-  100% {
-    text-shadow:
-      0 0 8px rgba(216, 185, 85, 0.25),
-      0 0 18px rgba(216, 185, 85, 0.16);
-  }
-
-  50% {
-    text-shadow:
-      0 0 12px rgba(216, 185, 85, 0.48),
-      0 0 28px rgba(216, 185, 85, 0.32),
-      0 0 52px rgba(216, 185, 85, 0.2);
-  }
-}
-
-.formCard,
-.loadingBox,
-.invitationBox {
-  border-radius: 24px;
-  border: 1px solid rgba(216, 185, 85, 0.22);
-  background: rgba(3, 12, 24, 0.42);
-  padding: 28px;
-}
-
-.formCard {
-  display: grid;
-  gap: 18px;
-  overflow: visible;
-}
-
-.fieldGroup label {
+.desktopNav {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 9px;
-  color: rgba(255, 255, 255, 0.78);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  justify-content: flex-end;
+  gap: clamp(24px, 3vw, 44px);
+  margin-left: auto;
 }
 
-.fieldGroup label span {
-  color: #d8b955;
-}
-
-.fieldGroup input,
-.fieldGroup textarea {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 16px;
-  outline: none;
-  background: rgba(2, 10, 22, 0.88);
-  color: #ffffff;
-  padding: 15px 16px;
-  font-size: 0.96rem;
-  font-family: Arial, Helvetica, sans-serif;
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
-}
-
-.fieldGroup textarea {
-  min-height: 140px;
-  resize: vertical;
-  line-height: 1.7;
-}
-
-.fieldGroup input::placeholder,
-.fieldGroup textarea::placeholder {
-  color: rgba(255, 255, 255, 0.32);
-}
-
-.fieldGroup input:focus,
-.fieldGroup textarea:focus {
-  border-color: rgba(216, 185, 85, 0.72);
-  background: rgba(4, 14, 28, 0.98);
-  box-shadow:
-    0 0 0 4px rgba(216, 185, 85, 0.08),
-    0 0 22px rgba(216, 185, 85, 0.08);
-}
-
-.sessionDropdown {
+.navLink {
   position: relative;
-  width: 100%;
-  z-index: 20;
-}
-
-.sessionDropdownButton {
-  width: 100%;
-  min-height: 58px;
-  border: 1px solid rgba(216, 185, 85, 0.24);
-  border-radius: 16px;
-  outline: none;
-  cursor: pointer;
-  padding: 11px 16px;
-  background:
-    linear-gradient(135deg, rgba(216, 185, 85, 0.08), rgba(216, 185, 85, 0.02)),
-    rgba(2, 10, 22, 0.88);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  text-align: left;
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgba(244, 241, 234, 0.78);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
+    color 0.25s ease,
+    transform 0.25s ease;
 }
 
-.sessionDropdownButton:hover,
-.sessionDropdownButtonOpen {
-  border-color: rgba(216, 185, 85, 0.82);
-  background:
-    linear-gradient(135deg, rgba(216, 185, 85, 0.14), rgba(216, 185, 85, 0.04)),
-    rgba(4, 14, 28, 0.98);
-  box-shadow:
-    0 0 0 4px rgba(216, 185, 85, 0.07),
-    0 0 28px rgba(216, 185, 85, 0.16);
-}
-
-.sessionDropdownText {
-  display: grid;
-  gap: 4px;
-}
-
-.sessionDropdownText strong {
-  color: #d8b955;
-  font-size: 0.9rem;
-  line-height: 1.2;
-  text-shadow:
-    0 0 8px rgba(216, 185, 85, 0.28),
-    0 0 20px rgba(216, 185, 85, 0.14);
-}
-
-.sessionDropdownText small {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.76rem;
-  line-height: 1.35;
-}
-
-.sessionDropdownIcon {
-  flex: 0 0 auto;
-  color: #d8b955;
-  transition:
-    transform 0.25s ease,
-    filter 0.25s ease;
-  filter:
-    drop-shadow(0 0 8px rgba(216, 185, 85, 0.4))
-    drop-shadow(0 0 18px rgba(216, 185, 85, 0.18));
-}
-
-.sessionDropdownIconOpen {
-  transform: rotate(180deg);
-}
-
-.sessionDropdownMenu {
+.navLink::after {
+  content: '';
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100% + 10px);
-  z-index: 50;
-  overflow: hidden;
-  border: 1px solid rgba(216, 185, 85, 0.42);
-  border-radius: 22px;
-  background:
-    linear-gradient(135deg, rgba(13, 32, 58, 0.98), rgba(7, 18, 36, 0.98));
-  box-shadow:
-    0 22px 52px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(216, 185, 85, 0.08),
-    0 0 36px rgba(216, 185, 85, 0.16);
-  backdrop-filter: blur(18px);
+  bottom: -9px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+  opacity: 0.85;
 }
 
-.sessionDropdownOption {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid rgba(216, 185, 85, 0.08);
-  outline: none;
-  cursor: pointer;
-  padding: 11px 16px;
-  background: transparent;
-  text-align: left;
-  font-family: Arial, Helvetica, sans-serif;
-  transition:
-    background 0.25s ease,
-    box-shadow 0.25s ease;
+.navLink:hover {
+  color: var(--gold-light);
+  transform: translateY(-1px);
 }
 
-.sessionDropdownOption:last-child {
-  border-bottom: none;
+.navLink:hover::after {
+  transform: scaleX(1);
 }
 
-.sessionDropdownOption strong {
-  display: block;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.86rem;
-  line-height: 1.2;
-  margin-bottom: 4px;
-  transition:
-    color 0.25s ease,
-    text-shadow 0.25s ease;
-}
-
-.sessionDropdownOption small {
-  display: block;
-  color: rgba(255, 255, 255, 0.46);
-  font-size: 0.73rem;
-  line-height: 1.4;
-}
-
-.sessionDropdownOption:hover,
-.sessionDropdownOptionActive {
-  background:
-    linear-gradient(135deg, rgba(216, 185, 85, 0.16), rgba(216, 185, 85, 0.035)),
-    rgba(7, 18, 36, 0.92);
-  box-shadow: inset 3px 0 0 rgba(216, 185, 85, 0.85);
-}
-
-.sessionDropdownOption:hover strong,
-.sessionDropdownOptionActive strong {
-  color: #d8b955;
-  text-shadow:
-    0 0 8px rgba(216, 185, 85, 0.38),
-    0 0 18px rgba(216, 185, 85, 0.22),
-    0 0 34px rgba(216, 185, 85, 0.12);
-}
-
-.submitButton {
-  width: fit-content;
-  min-width: 144px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  border-radius: 999px;
-  padding: 14px 24px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: linear-gradient(135deg, #f1d36d, #c9a84c);
-  color: #071529;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.84rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+.registerButton,
+.mobileRegister,
+.panelRegister {
+  text-decoration: none;
   text-transform: uppercase;
-  box-shadow: 0 16px 40px rgba(201, 168, 76, 0.22);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.registerButton {
+  color: var(--navy);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  padding: 0.82rem 1.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  box-shadow:
+    0 14px 34px rgba(201, 168, 76, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
-    opacity 0.25s ease;
+    filter 0.25s ease;
 }
 
-.submitButton:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 48px rgba(201, 168, 76, 0.28);
+.registerButton:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+  box-shadow:
+    0 18px 44px rgba(201, 168, 76, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
 }
 
-.submitButton:disabled {
-  opacity: 0.65;
-  cursor: wait;
-  transform: none;
-}
-
-.errorMessage {
-  margin: 0;
-  color: #ffaaaa;
-  font-size: 0.86rem;
-  line-height: 1.6;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.logoPanel {
-  display: flex;
-  flex-direction: column;
+.mobileActions {
+  display: none;
   align-items: center;
-  justify-content: center;
-  background: transparent;
-  box-shadow: none;
-  border: none;
-}
-
-.logoKicker {
-  margin: 0 0 30px;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: clamp(1.45rem, 2.2vw, 2.4rem);
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 400;
-  letter-spacing: -0.04em;
-  text-align: center;
-}
-
-.accelalphaWrap {
-  width: min(88%, 530px);
-  margin-bottom: 34px;
-}
-
-.accelalphaLogo,
-.oracleLogo {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-.oracleRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-}
-
-.oracleLogoWrap {
-  width: 145px;
-}
-
-.oracleRow span {
-  width: 1px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.28);
-}
-
-.oracleRow p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 1.1rem;
-  font-weight: 700;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.loadingBox,
-.invitationBox {
-  min-height: 430px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.loadingBox h3,
-.invitationBox h3 {
-  margin: 18px 0 0;
-  color: #f3f0ea;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.7rem, 2.5vw, 2.5rem);
-  line-height: 1.08;
-  font-weight: 700;
-  letter-spacing: -0.05em;
-}
-
-.loadingBox p {
-  margin: 16px 0 0;
-  max-width: 500px;
-  color: rgba(255, 255, 255, 0.62);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.seaLoader {
-  position: relative;
-  width: 122px;
-  height: 88px;
-  overflow: hidden;
-  border-radius: 24px;
-  background: linear-gradient(180deg, rgba(34, 211, 238, 0.08), rgba(34, 211, 238, 0.02));
-  border: 1px solid rgba(34, 211, 238, 0.18);
-}
-
-.shipIcon {
-  position: absolute;
-  left: 39px;
-  top: 18px;
-  color: #d8b955;
-  z-index: 3;
-  animation: shipFloat 1.8s ease-in-out infinite;
-}
-
-.wave {
-  position: absolute;
-  left: -30%;
-  right: -30%;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(34, 211, 238, 0.18);
-}
-
-.waveOne {
-  bottom: -12px;
-  animation: waveMove 2.2s linear infinite;
-}
-
-.waveTwo {
-  bottom: -20px;
-  opacity: 0.7;
-  animation: waveMove 3s linear infinite reverse;
-}
-
-.successMark {
-  width: 62px;
-  height: 62px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(216, 185, 85, 0.12);
-  color: #d8b955;
-  margin-bottom: 20px;
-}
-
-.smallLabel {
-  margin: 0;
-  color: #d8b955;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.invitationBox h3 span {
-  color: #d8b955;
-}
-
-.matchedSession {
-  margin-top: 24px;
-  border-radius: 22px;
-  padding: 20px;
-  background: rgba(4, 12, 25, 0.62);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.matchedSession p {
-  margin: 0;
-  color: #d8b955;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.matchedSession h4 {
-  margin: 10px 0 0;
-  color: #ffffff;
-  font-size: 1.12rem;
-  line-height: 1.35;
-  letter-spacing: -0.035em;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.matchedSession span {
-  display: block;
-  margin-top: 8px;
-  color: rgba(255, 255, 255, 0.56);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.emailDraft {
-  margin-top: 16px;
-  max-height: 240px;
-  overflow-y: auto;
-  border-radius: 22px;
-  padding: 20px;
-  white-space: pre-wrap;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.9rem;
-  line-height: 1.8;
-  background: rgba(4, 12, 25, 0.62);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@keyframes shipFloat {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-3deg);
-  }
-
-  50% {
-    transform: translateY(-8px) rotate(3deg);
-  }
-}
-
-@keyframes waveMove {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(24%);
-  }
-}
-
-@media (max-width: 980px) {
-  .mainGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .verticalDivider {
-    width: 100%;
-    height: 1px;
-  }
-
-  .formPanel,
-  .logoPanel {
-    padding: 36px 28px;
-  }
-}
-
-@media (max-width: 680px) {
-  .registerSection {
-    padding: 80px 18px 70px;
-  }
-
-  .sectionIntro {
-    margin-bottom: 40px;
-  }
-
-  .formPanel,
-  .logoPanel {
-    padding: 28px 22px;
-  }
-
-  .formCard,
-  .loadingBox,
-  .invitationBox {
-    padding: 22px;
-  }
-
-  .oracleLogoWrap {
-    width: 118px;
-  }
-}
-
-/* ================================
-   Success / invitation UI polish
-   Added for backend result screen only.
-   Existing form, dropdown, logo and layout styles are unchanged above.
-================================ */
-
-.invitationBox {
-  justify-content: flex-start;
-}
-
-.invitationBox .smallLabel {
-  color: rgba(241, 211, 109, 0.92);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.successHeader {
-  margin-top: 22px;
-  margin-bottom: 28px;
-}
-
-.registeredBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content;
-  border-radius: 999px;
-  padding: 7px 13px;
-  background: rgba(52, 211, 153, 0.12);
-  border: 1px solid rgba(52, 211, 153, 0.28);
-  color: #66e7ad;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.registeredName {
-  margin: 12px 0 0;
-  color: #f3f0ea;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(2.3rem, 4vw, 4.2rem);
-  line-height: 1.02;
-  font-weight: 700;
-  letter-spacing: -0.055em;
-  text-transform: capitalize;
-}
-
-.matchedSession {
-  margin-top: 0;
-  padding: 22px 24px;
-}
-
-.matchedSession p {
-  margin: 0;
-  color: rgba(241, 211, 109, 0.86);
-  font-size: 0.72rem;
-  font-weight: 750;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.matchedSession h4 {
-  margin: 11px 0 0;
-  color: #ffffff;
-  font-size: 1.12rem;
-  line-height: 1.4;
-  letter-spacing: -0.025em;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 750;
-}
-
-.matchedMeta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-  margin-top: 9px;
-  color: rgba(255, 255, 255, 0.62);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.88rem;
-  line-height: 1.55;
-}
-
-.matchedMeta span {
-  display: inline-flex;
-  align-items: center;
-}
-
-.matchedMeta span + span::before {
-  content: '•';
-  margin-right: 14px;
-  color: rgba(241, 211, 109, 0.72);
-}
-
-.emailDraft {
-  margin-top: 22px;
-  max-height: 430px;
-  padding: 24px 26px;
-  color: rgba(255, 255, 255, 0.76);
-  font-size: 0.93rem;
-  line-height: 1.78;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.emailDraft p {
-  margin: 0 0 16px;
-}
-
-.emailDraft p:last-child {
-  margin-bottom: 0;
-}
-
-.emailDraft strong {
-  color: rgba(255, 255, 255, 0.94);
-  font-weight: 800;
-}
-
-.highlight {
-  color: #f1d36d !important;
-  font-weight: 850;
-}
-
-.invitationFocus {
-  border-left: 3px solid rgba(241, 211, 109, 0.68);
-  border-radius: 12px;
-  padding: 13px 15px;
-  background: rgba(241, 211, 109, 0.07);
-  color: rgba(255, 255, 255, 0.82);
-  font-style: italic;
-}
-
-.actionRow {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 30px;
-}
-
-.secondaryButton {
-  width: fit-content;
-  min-width: 164px;
-  border: 1px solid rgba(216, 185, 85, 0.38);
-  outline: none;
-  cursor: pointer;
-  border-radius: 999px;
-  padding: 14px 22px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   gap: 10px;
-  background: rgba(216, 185, 85, 0.08);
-  color: #f1d36d;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  margin-left: auto;
+}
+
+.mobileRegister {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  color: var(--navy);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  font-size: 0.68rem;
+  white-space: nowrap;
+  box-shadow: 0 10px 28px rgba(201, 168, 76, 0.18);
+}
+
+.menuButton {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(201, 168, 76, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.menuButton span {
+  width: 17px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--gold-light);
   transition:
     transform 0.25s ease,
-    background 0.25s ease,
-    border-color 0.25s ease;
+    opacity 0.2s ease;
 }
 
-.secondaryButton:hover {
-  transform: translateY(-3px);
-  background: rgba(216, 185, 85, 0.14);
-  border-color: rgba(216, 185, 85, 0.72);
+.menuButtonOpen span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
 }
 
-@media (max-width: 680px) {
-  .registeredName {
-    font-size: clamp(2rem, 10vw, 3rem);
-  }
-
-  .emailDraft {
-    max-height: 390px;
-    padding: 20px;
-    font-size: 0.88rem;
-  }
-
-  .actionRow {
-    align-items: stretch;
-  }
-
-  .actionRow .submitButton,
-  .secondaryButton {
-    width: 100%;
-  }
-
-  .matchedMeta {
-    display: block;
-  }
-
-  .matchedMeta span {
-    display: block;
-  }
-
-  .matchedMeta span + span::before {
-    content: '';
-    margin-right: 0;
-  }
+.menuButtonOpen span:nth-child(2) {
+  opacity: 0;
 }
 
-@media print {
-  .registerSection {
-    padding: 0;
-    color: #111827;
-    background: #ffffff;
-  }
-
-  .sectionIntro,
-  .verticalDivider,
-  .logoPanel,
-  .actionRow,
-  .bgGlowLeft,
-  .bgGlowRight {
-    display: none !important;
-  }
-
-  .container,
-  .mainGrid,
-  .formPanel,
-  .invitationBox,
-  .matchedSession,
-  .emailDraft {
-    width: 100% !important;
-    max-width: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    background: #ffffff !important;
-    color: #111827 !important;
-  }
-
-  .mainGrid {
-    display: block;
-  }
-
-  .formPanel,
-  .invitationBox {
-    padding: 0 !important;
-  }
-
-  .smallLabel,
-  .matchedSession p,
-  .highlight,
-  .emailDraft strong,
-  .registeredName,
-  .registeredBadge {
-    color: #111827 !important;
-  }
-
-  .emailDraft {
-    max-height: none;
-    overflow: visible;
-    padding: 0 !important;
-    font-size: 12pt;
-    line-height: 1.6;
-  }
+.menuButtonOpen span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
+.mobileOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.32s ease;
+}
 
+.mobileOverlayOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
 
-.fieldGroup input,
-.fieldGroup textarea {
+.mobilePanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  width: min(84vw, 380px);
+  height: 100vh;
+  padding: 104px 24px 28px;
   background:
-    linear-gradient(135deg, rgba(216, 185, 85, 0.04), rgba(216, 185, 85, 0.015)),
-    rgba(2, 10, 22, 0.88) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(216, 185, 85, 0.24) !important;
+    radial-gradient(circle at 30% 0%, rgba(201, 168, 76, 0.12), transparent 36%),
+    linear-gradient(180deg, rgba(8, 20, 38, 0.98), rgba(5, 13, 25, 0.96));
+  border-left: 1px solid rgba(201, 168, 76, 0.18);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: -30px 0 90px rgba(0, 0, 0, 0.4);
+  transform: translateX(110%);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-
-.fieldGroup input:-webkit-autofill,
-.fieldGroup input:-webkit-autofill:hover,
-.fieldGroup input:-webkit-autofill:focus,
-.fieldGroup textarea:-webkit-autofill,
-.fieldGroup textarea:-webkit-autofill:hover,
-.fieldGroup textarea:-webkit-autofill:focus {
-  -webkit-text-fill-color: #ffffff !important;
-  caret-color: #ffffff !important;
-  box-shadow: 0 0 0 1000px rgba(2, 10, 22, 0.96) inset !important;
-  border: 1px solid rgba(216, 185, 85, 0.28) !important;
-  transition: background-color 9999s ease-in-out 0s;
+.mobilePanelOpen {
+  transform: translateX(0);
 }
 
-
-.fieldGroup input::placeholder,
-.fieldGroup textarea::placeholder {
-  color: rgba(255, 255, 255, 0.42) !important;
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
-
-.emailDraft,
-.emailDraft p {
-  font-weight: 400 !important;
-  color: rgba(255, 255, 255, 0.76) !important;
-  line-height: 1.8 !important;
+.panelHeader button {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
-
-.emailDraft strong,
-.emailDraft b,
-.invitationBox strong,
-.invitationBox b {
-  font-weight: 650 !important;
-  color: #f0d263 !important;
+.panelLinks {
+  display: grid;
+  gap: 14px;
 }
 
-.emailDraft .softBold,
-.invitationBox .softBold {
-  font-weight: 600 !important;
-  color: rgba(255, 255, 255, 0.9) !important;
+.panelLinks a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 62px;
+  padding: 0 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--white);
+  text-decoration: none;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.22rem;
+  transform: translateX(22px);
+  opacity: 0;
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
 }
 
-
-.emailDraft blockquote,
-.focusQuote {
-  font-weight: 400 !important;
-  color: rgba(255, 255, 255, 0.78) !important;
+.mobilePanelOpen .panelLinks a {
+  transform: translateX(0);
+  opacity: 1;
 }
 
-
-.invitationActions,
-.invitationBoxActions {
-  margin-top: 32px !important;
+.panelLinks a:hover {
+  border-color: rgba(201, 168, 76, 0.35);
+  background: rgba(201, 168, 76, 0.08);
 }
 
-/*  buttons are directly after emailDraft */
-.emailDraft + .submitButton,
-.emailDraft + div,
-.emailDraft + button {
-  margin-top: 28px !important;
+.panelLinks a span {
+  color: var(--gold);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
 }
-/* Outer glass removal safety:
-   Keeps the form and logos responsive without adding an outside glass panel. */
+
+.panelRegister {
+  color: var(--navy) !important;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold)) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.92rem !important;
+}
+
+.panelRegister span {
+  color: rgba(10, 22, 40, 0.72) !important;
+}
+
 @media (max-width: 980px) {
-  .mainGrid {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  .desktopNav {
+    display: none;
   }
+
+  .mobileActions {
+    display: flex;
+  }
+
+  .navShell {
+    height: 70px;
+    padding: 0 16px;
+  }
+
+  .navbarScrolled .navShell {
+    height: 66px;
+  }
+}
+
+@media (max-width: 560px) {
+  html {
+    scroll-padding-top: 92px;
+  }
+
+  #about,
+  #speakers,
+  #agenda,
+  #register {
+    scroll-margin-top: 92px;
+  }
+
+  .navbar {
+    padding: 10px;
+  }
+
+  .navShell {
+    height: 64px;
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .navbarScrolled {
+    padding-top: 8px;
+  }
+
+  .navbarScrolled .navShell {
+    height: 62px;
+  }
+
+  .brandLogos {
+    gap: 8px;
+  }
+
+  .accelLogo {
+    width: 88px;
+  }
+
+  .oracleLogo {
+    width: 68px;
+  }
+
+  .logoDivider {
+    height: 22px;
+  }
+
+  .mobileRegister {
+    min-height: 36px;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+
+  .menuButton {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mobilePanel {
+    width: min(88vw, 360px);
+    padding-top: 94px;
+  }
+}
+
+@media (max-width: 380px) {
+  .accelLogo {
+    width: 78px;
+  }
+
+  .oracleLogo {
+    width: 58px;
+  }
+
+  .mobileRegister {
+    padding-inline: 0.58rem;
+    font-size: 0.56rem;
+  }
+
+  .menuButton {
+    width: 36px;
+    height: 36px;
+  }
+}
+/* Final invitation action cleanup:
+   Print Invitation was removed from JSX, so keep Register Another centered and responsive. */
+.actionRow {
+  justify-content: center;
+}
+
+.actionRow .submitButton {
+  min-width: 230px;
 }
 
 @media (max-width: 680px) {
-  .mainGrid {
+  .actionRow .submitButton {
     width: 100%;
-  }
-
-  .logoPanel {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-  }
-}
-/* Final mobile registration width refinement:
-   Reduces nested padding on small screens so the actual form becomes wider and clearer. */
-@media (max-width: 680px) {
-  .registerSection {
-    padding: 74px 10px 64px !important;
-  }
-
-  .container {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
-
-  .mainGrid {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .formPanel {
-    width: 100% !important;
-    padding: 24px 8px !important;
-  }
-
-  .formHeading {
-    text-align: center;
-    margin-bottom: 24px;
-  }
-
-  .formCard,
-  .loadingBox,
-  .invitationBox {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 20px 14px !important;
-    border-radius: 22px;
-    box-sizing: border-box;
-  }
-
-  .fieldGroup input,
-  .fieldGroup textarea,
-  .sessionDropdownButton {
-    border-radius: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .submitButton {
-    width: 100%;
-  }
-
-  .logoPanel {
-    padding: 28px 10px !important;
-  }
-}
-
-@media (max-width: 390px) {
-  .registerSection {
-    padding-left: 8px !important;
-    padding-right: 8px !important;
-  }
-
-  .formPanel {
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-  }
-
-  .formCard,
-  .loadingBox,
-  .invitationBox {
-    padding: 18px 12px !important;
-  }
-
-  .fieldGroup label {
-    font-size: 0.72rem;
-    letter-spacing: 0.07em;
-  }
-
-  .fieldGroup input,
-  .fieldGroup textarea {
-    font-size: 0.9rem;
-  }
-
-  .sessionDropdownText strong {
-    font-size: 0.86rem;
-  }
-
-  .sessionDropdownText small {
-    font-size: 0.72rem;
+    min-width: 0;
   }
 }
