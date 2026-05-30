@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'  // ← added useMemo
 import { AnimatePresence, motion } from 'framer-motion'
 import { Clock } from 'lucide-react'
 import styles from './Agenda.module.css'
@@ -95,15 +95,64 @@ const tags = [
 
 export default function Agenda() {
   const [activeTag, setActiveTag] = useState('all')
+  const [glowedDots, setGlowedDots] = useState(new Set())
+  const itemRefs = useRef([])
 
-  const filteredSessions =
-    activeTag === 'all'
-      ? sessions
-      : sessions.filter((session) => session.tag === activeTag)
+  // ── FIX: useMemo so filteredSessions keeps the SAME array reference
+  // between renders. Without this, a new array is created every render,
+  // making useEffect think the dependency changed → infinite loop.
+  const filteredSessions = useMemo(
+    () =>
+      activeTag === 'all'
+        ? sessions
+        : sessions.filter((session) => session.tag === activeTag),
+    [activeTag]
+  )
+
+  // Single effect: observers + reset-on-cleanup
+  useEffect(() => {
+    const observers = []
+
+    itemRefs.current.forEach((ref, index) => {
+      if (!ref) return
+      const sessionId = filteredSessions[index]?.id
+      if (sessionId == null) return
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          const rect = entry.boundingClientRect
+
+          if (entry.isIntersecting) {
+            // Entered viewport (scrolling down) → glow
+            setGlowedDots((prev) => new Set([...prev, sessionId]))
+          } else if (rect.top > window.innerHeight * 0.55) {
+            // Left viewport from bottom (scrolling up) → un-glow
+            setGlowedDots((prev) => {
+              const next = new Set(prev)
+              next.delete(sessionId)
+              return next
+            })
+          }
+          // Left from top (scrolled past going down) → keep glow
+        },
+        { threshold: 0.45 }
+      )
+
+      observer.observe(ref)
+      observers.push(observer)
+    })
+
+    return () => {
+      observers.forEach((o) => o.disconnect())
+      setGlowedDots(new Set()) // reset glow on filter change (cleanup)
+    }
+  }, [filteredSessions]) // ← now stable — only changes when activeTag changes
 
   return (
     <section id="agenda" className={styles.agendaSection}>
       <div className={styles.agendaContainer}>
+
+        {/* Header — unchanged */}
         <motion.div
           className={styles.agendaHeader}
           initial={{ opacity: 0, y: -34, filter: 'blur(8px)' }}
@@ -130,6 +179,7 @@ export default function Agenda() {
           />
         </motion.div>
 
+        {/* Filter bar — unchanged */}
         <motion.div
           className={styles.filterBar}
           initial={{ opacity: 0, y: 20, filter: 'blur(6px)' }}
@@ -163,6 +213,7 @@ export default function Agenda() {
           ))}
         </motion.div>
 
+        {/* Timeline */}
         <motion.div className={styles.timelineWrap} layout>
           <motion.div
             className={styles.timelineLine}
@@ -172,14 +223,40 @@ export default function Agenda() {
             transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
           />
 
-          <div className={styles.timelineWatermark}>AGENDA</div>
+          {/* Sticky AGENDA watermark */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'sticky',
+              top: '50vh',
+              height: 0,
+              overflow: 'visible',
+              zIndex: 0,
+              pointerEvents: 'none',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <div
+              className={styles.timelineWatermark}
+              style={{
+                position: 'static',
+                transform: 'translateY(-50%)',
+                display: 'block',
+              }}
+            >
+              AGENDA
+            </div>
+          </div>
 
           <AnimatePresence mode="popLayout">
             {filteredSessions.map((session, index) => {
               const isLeft = index % 2 === 0
+              const isGlowing = glowedDots.has(session.id)
 
               return (
                 <motion.div
+                  ref={(el) => { itemRefs.current[index] = el }}
                   layout
                   key={session.id}
                   className={`${styles.timelineItem} ${
@@ -189,7 +266,7 @@ export default function Agenda() {
                   whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, y: -18, filter: 'blur(6px)' }}
                   viewport={{
-                    once: false,
+                    once: true,
                     amount: 0.3,
                     margin: '-8% 0px -8% 0px',
                   }}
@@ -198,22 +275,14 @@ export default function Agenda() {
                     ease: [0.16, 1, 0.3, 1],
                     delay: Math.min(index * 0.045, 0.28),
                   }}
+                  style={{ marginBottom: '0.35rem' }}
                 >
                   <motion.article
                     className={styles.timelineContent}
-                    initial={{
-                      x: isLeft ? -34 : 34,
-                      opacity: 0,
-                    }}
-                    whileInView={{
-                      x: 0,
-                      opacity: 1,
-                    }}
-                    viewport={{ once: false, amount: 0.35 }}
-                    transition={{
-                      duration: 0.68,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
+                    initial={{ x: isLeft ? -34 : 34, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    viewport={{ once: true, amount: 0.35 }}
+                    transition={{ duration: 0.68, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <p className={styles.sessionTime}>
                       <Clock size={16} strokeWidth={2.2} />
@@ -227,26 +296,35 @@ export default function Agenda() {
                     </p>
                   </motion.article>
 
+                  {/* Dot — pop via whileInView, glow via animate (scroll-controlled) */}
                   <motion.div
                     className={styles.timelineDot}
-                    initial={{
-                      opacity: 0,
-                      scale: 0.72,
-                    }}
+                    initial={{ opacity: 0, scale: 0.72 }}
                     whileInView={{
                       opacity: 1,
                       scale: [0.72, 1.22, 1],
-                      boxShadow: [
-                        '0 0 0 0 rgba(201,168,76,0), 0 0 0 rgba(201,168,76,0)',
-                        '0 0 0 12px rgba(201,168,76,0.15), 0 0 42px rgba(201,168,76,0.75)',
-                        '0 0 0 7px rgba(201,168,76,0.08), 0 0 28px rgba(201,168,76,0.48)',
-                      ],
                     }}
-                    viewport={{ once: false, amount: 0.58 }}
+                    animate={{
+                      boxShadow: isGlowing
+                        ? '0 0 0 8px rgba(201,168,76,0.12), 0 0 32px rgba(201,168,76,0.6), inset 0 0 14px rgba(201,168,76,0.15)'
+                        : '0 0 0 0px rgba(201,168,76,0)',
+                      color: isGlowing ? '#c9a84c' : undefined,
+                      background: isGlowing
+                        ? 'radial-gradient(circle, rgba(201,168,76,0.22) 0%, rgba(10,22,40,0.95) 75%)'
+                        : undefined,
+                      borderColor: isGlowing
+                        ? 'rgba(201,168,76,0.75)'
+                        : undefined,
+                    }}
                     transition={{
                       duration: 0.82,
                       ease: [0.16, 1, 0.3, 1],
+                      boxShadow:   { duration: 0.55, ease: 'easeInOut' },
+                      color:       { duration: 0.45, ease: 'easeInOut' },
+                      background:  { duration: 0.55, ease: 'easeInOut' },
+                      borderColor: { duration: 0.45, ease: 'easeInOut' },
                     }}
+                    viewport={{ once: false, amount: 0.58 }}
                   >
                     {session.id}
                   </motion.div>
