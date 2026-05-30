@@ -517,7 +517,7 @@ export default function Footer() {
 
           .fourth-award-card {
             width: 52px;
-            height: 84px;
+            height: 90px;
           }
         }
 
