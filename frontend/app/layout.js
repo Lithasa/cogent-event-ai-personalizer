@@ -71,7 +71,7 @@ const bootScreenScript = `
   function revealApp() {
     setTimeout(function () {
       document.documentElement.classList.add('app-ready');
-    }, 900);
+    }, 450);
   }
 
   if (document.readyState === 'complete') {
