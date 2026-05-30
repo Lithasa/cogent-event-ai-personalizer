@@ -43,7 +43,7 @@ export default function Navbar() {
           <a href="#" className="cogBrand" aria-label="Go to top" onClick={closeMenu}>
             <div className="cogBrandLogos">
               <img
-                src="/images/accelalpha-logo.png"
+                src="/images/logos/accelalpha-logo.png"
                 alt="Accelalpha"
                 className="cogAccelLogo"
               />
@@ -52,7 +52,7 @@ export default function Navbar() {
 
               <span className="cogOracleCrop">
                 <img
-                  src="/images/oracle-logo.png"
+                  src="/images/logos/oracle-logo.png"
                   alt="Oracle"
                   className="cogOracleLogo"
                 />

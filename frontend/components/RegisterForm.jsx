@@ -470,7 +470,7 @@ export default function RegisterForm() {
 
             <div className={styles.accelalphaWrap}>
               <Image
-                src="/images/accelalpha-logo.png"
+                src="/images/logos/accelalpha-logo.png"
                 alt="Accelalpha logo"
                 width={540}
                 height={170}
@@ -481,7 +481,7 @@ export default function RegisterForm() {
             <div className={styles.oracleRow}>
               <div className={styles.oracleLogoWrap}>
                 <Image
-                  src="/images/oracle-logo.png"
+                  src="/images/logos/oracle-logo.png"
                   alt="Oracle logo"
                   width={155}
                   height={50}

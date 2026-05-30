@@ -7,17 +7,17 @@ const reasons = [
   {
     title: "Oracle's Gen AI SCM Platform Unveiled",
     desc: "Explore how Oracle's AI-powered SCM innovations offer predictive analytics, automation, improved visibility, and sustainability into supply chains like yours.",
-    image: '/images/warehouse.jpg',
+    image: '/images/others/warehouse.jpg',
   },
   {
     title: 'Customer Success Stories That Deliver Results',
     desc: 'Hear how companies partnered with Oracle and Accelalpha to optimize logistics flows, cut costs, and improve resilience through smarter inventory management and automation.',
-    image: '/images/customer.jpg',
+    image: '/images/others/customer.jpg',
   },
   {
     title: 'Practical Solutions for Green & Resilient Operations',
     desc: 'Navigate geopolitical risks, last-mile delivery challenges, and integrate eco-friendly practices — keeping operations agile and competitive in the Gulf market.',
-    image: '/images/solutions.jpg',
+    image: '/images/others/solutions.jpg',
   },
 ]
 

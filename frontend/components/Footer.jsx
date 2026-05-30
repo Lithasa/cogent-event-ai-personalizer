@@ -11,19 +11,19 @@ import {
 
 const awards = [
   {
-    src: '/images/award1.png',
+    src: '/images/awards/award1.png',
     alt: 'Great Place To Work GCC 2024',
   },
   {
-    src: '/images/award2.png',
+    src: '/images/awards/award2.png',
     alt: 'Great Place To Work GCC 2023',
   },
   {
-    src: '/images/award3.png',
+    src: '/images/awards/award3.png',
     alt: 'Great Place To Work UAE 2023',
   },
   {
-    src: '/images/award4.png',
+    src: '/images/awards/award4.png',
     alt: 'Great Place To Work Certified UAE',
   },
 ]
