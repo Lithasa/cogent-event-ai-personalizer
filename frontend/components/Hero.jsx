@@ -127,7 +127,7 @@ export default function Hero() {
                 <div className="shipAura" />
 
                 <Image
-                  src="/images/shipmove.png"
+                  src="/images/others/shipmove.png"
                   alt=""
                   width={920}
                   height={610}

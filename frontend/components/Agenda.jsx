@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'  // ← added useMemo
+import { useState, useEffect, useRef, useMemo } from 'react'  
 import { AnimatePresence, motion } from 'framer-motion'
 import { Clock } from 'lucide-react'
 import styles from './Agenda.module.css'
@@ -222,32 +222,6 @@ export default function Agenda() {
             viewport={{ once: false, amount: 0.12 }}
             transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
           />
-
-          {/* Sticky AGENDA watermark */}
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'sticky',
-              top: '50vh',
-              height: 0,
-              overflow: 'visible',
-              zIndex: 0,
-              pointerEvents: 'none',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <div
-              className={styles.timelineWatermark}
-              style={{
-                position: 'static',
-                transform: 'translateY(-50%)',
-                display: 'block',
-              }}
-            >
-              AGENDA
-            </div>
-          </div>
 
           <AnimatePresence mode="popLayout">
             {filteredSessions.map((session, index) => {
