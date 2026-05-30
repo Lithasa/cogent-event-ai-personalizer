@@ -51,9 +51,6 @@ export default function Hero() {
       onMouseLeave={resetMouse}
     >
       <div className="heroBackdrop" />
-      <div className="heroLight heroLightOne" />
-      <div className="heroLight heroLightTwo" />
-
       <div className="heroStars" aria-hidden="true">
         {stars.map((star, index) => (
           <span
@@ -143,10 +140,7 @@ export default function Hero() {
           min-height: 100svh;
           overflow: hidden;
           padding: 136px clamp(42px, 5.6vw, 96px) 72px;
-          background:
-            radial-gradient(circle at 74% 16%, rgba(42, 154, 170, 0.16), transparent 28%),
-            radial-gradient(circle at 18% 30%, rgba(201, 168, 76, 0.08), transparent 28%),
-            linear-gradient(180deg, #071423 0%, #081729 48%, #06121f 100%);
+          background: linear-gradient(180deg, #071423 0%, #081729 48%, #06121f 100%);
           isolation: isolate;
         }
 
@@ -154,19 +148,11 @@ export default function Hero() {
           position: absolute;
           inset: 0;
           z-index: -6;
-          background:
-            linear-gradient(120deg, rgba(255, 255, 255, 0.04), transparent 32%),
-            linear-gradient(240deg, rgba(201, 168, 76, 0.05), transparent 36%);
+          background: transparent;
         }
 
         .heroLight {
-          position: absolute;
-          border-radius: 999px;
-          filter: blur(38px);
-          pointer-events: none;
-          z-index: -4;
-          transform: translate3d(var(--glowX), var(--glowY), 0);
-          transition: transform 0.25s ease-out;
+          display: none;
         }
 
         .heroLightOne {
@@ -457,15 +443,7 @@ export default function Hero() {
         }
 
         .shipAura {
-          position: absolute;
-          inset: 10% 4% 4% 0;
-          border-radius: 50%;
-          background:
-            radial-gradient(circle at 55% 48%, rgba(36, 179, 240, 0.18), transparent 44%),
-            radial-gradient(circle at 78% 55%, rgba(201, 168, 76, 0.08), transparent 34%);
-          filter: blur(26px);
-          transform: translateZ(-70px);
-          opacity: 0.86;
+          display: none;
         }
 
         .shipImage {
@@ -592,20 +570,29 @@ export default function Hero() {
           .titleSub {
             font-size: clamp(1.95rem, 2.65vw, 2.95rem);
           }
-        }
-
-        @media (max-width: 1180px) {
-          .heroShell {
-            grid-template-columns: minmax(0, 1fr) minmax(340px, 0.9fr);
-            gap: 34px;
-          }
 
           .heroMeta {
-            gap: 16px;
+            gap: 18px;
           }
 
           .heroMeta div {
-            font-size: 0.84rem;
+            font-size: 0.9rem;
+          }
+        }
+
+        @media (max-width: 1180px) {
+          .heroSection {
+            padding-top: 130px;
+          }
+
+          .heroShell {
+            grid-template-columns: minmax(0, 1fr) minmax(330px, 0.88fr);
+            gap: 30px;
+          }
+
+          .heroMeta {
+            flex-wrap: wrap;
+            gap: 14px 18px;
           }
 
           .shipEntrance {
@@ -615,32 +602,43 @@ export default function Hero() {
 
         @media (max-width: 1100px) {
           .heroSection {
-            padding-inline: clamp(22px, 5vw, 60px);
+            min-height: auto;
+            padding: 128px clamp(24px, 5vw, 60px) 64px;
           }
 
           .heroShell {
             grid-template-columns: 1fr;
-            gap: 34px;
+            min-height: auto;
+            gap: 36px;
           }
 
           .heroContent {
             max-width: 860px;
           }
 
+          .titleMain,
+          .titleSub {
+            white-space: normal;
+          }
+
+          .heroVisual {
+            width: min(88vw, 640px);
+            margin: 0 auto;
+          }
+
           .shipPerspective {
-            min-height: 420px;
+            min-height: clamp(340px, 46vw, 460px);
           }
 
           .shipEntrance {
-            width: min(94vw, 560px);
-            margin-left: auto;
-            margin-right: auto;
+            width: min(100%, 590px);
+            margin-inline: auto;
           }
 
           @keyframes shipApproach {
             from {
               opacity: 0;
-              transform: translate3d(260px, -150px, -420px) rotateX(12deg) rotateY(-28deg) scale(0.24);
+              transform: translate3d(250px, -145px, -410px) rotateX(12deg) rotateY(-28deg) scale(0.24);
               filter: blur(10px);
             }
             to {
@@ -661,6 +659,10 @@ export default function Hero() {
         }
 
         @media (max-width: 900px) {
+          .heroSection {
+            padding-top: 124px;
+          }
+
           .titleMain,
           .titleSub {
             white-space: normal;
@@ -669,17 +671,21 @@ export default function Hero() {
           .heroMeta {
             flex-wrap: wrap;
           }
+
+          .heroActions {
+            gap: 12px;
+          }
         }
 
         @media (max-width: 760px) {
           .heroSection {
             min-height: 100svh;
-            padding: 132px 24px 48px;
+            padding: 132px 24px 330px;
           }
 
           .heroShell {
             display: block;
-            min-height: calc(100svh - 180px);
+            min-height: auto;
           }
 
           .heroContent {
@@ -690,15 +696,20 @@ export default function Hero() {
 
           .heroBadge {
             margin-bottom: 18px;
+            padding: 9px 12px;
+            font-size: 0.64rem;
+            letter-spacing: 0.14em;
           }
 
           .titleMain {
-            font-size: clamp(2.45rem, 10.6vw, 3.65rem);
+            font-size: clamp(2.35rem, 10vw, 3.45rem);
             margin-bottom: 12px;
+            line-height: 0.98;
           }
 
           .titleSub {
-            font-size: clamp(1.82rem, 7.6vw, 2.7rem);
+            font-size: clamp(1.72rem, 7.5vw, 2.55rem);
+            line-height: 1.04;
           }
 
           .heroMeta {
@@ -715,24 +726,34 @@ export default function Hero() {
             white-space: normal;
           }
 
+          .heroMeta :global(.metaIcon) {
+            width: 17px;
+            height: 17px;
+          }
+
           .heroActions {
+            display: grid;
+            grid-template-columns: 1fr;
             align-items: stretch;
             margin-top: 26px;
+            gap: 12px;
           }
 
           .heroPrimary,
           .heroSecondary {
             width: 100%;
             min-height: 46px;
+            font-size: 0.68rem;
           }
 
           .heroVisual {
             position: absolute;
             z-index: 1;
-            right: -24%;
-            bottom: -4px;
+            right: -20%;
+            bottom: -72px;
             width: min(112vw, 520px);
-            opacity: 0.66;
+            opacity: 0.72;
+            margin: 0;
           }
 
           .shipPerspective {
@@ -752,13 +773,30 @@ export default function Hero() {
           }
         }
 
+        @media (max-width: 640px) {
+          .heroSection {
+            padding: 128px 20px 315px;
+          }
+
+          .heroVisual {
+            right: -22%;
+            bottom: -76px;
+            width: min(118vw, 500px);
+            opacity: 0.74;
+          }
+
+          .shipPerspective {
+            min-height: 285px;
+          }
+        }
+
         @media (max-width: 520px) {
           .heroSection {
-            padding: 142px 18px 44px;
+            padding: 120px 18px 300px;
           }
 
           .heroBadge {
-            font-size: 0.6rem;
+            font-size: 0.58rem;
             letter-spacing: 0.12em;
             padding: 8px 10px;
           }
@@ -768,54 +806,122 @@ export default function Hero() {
           }
 
           .titleMain {
-            font-size: clamp(2.28rem, 11vw, 3.15rem);
+            font-size: clamp(2.08rem, 11vw, 2.95rem);
           }
 
           .titleSub {
-            font-size: clamp(1.72rem, 8.4vw, 2.35rem);
+            font-size: clamp(1.55rem, 8.4vw, 2.18rem);
           }
 
           .heroVisual {
-            right: -34%;
-            bottom: 2px;
-            width: 122vw;
-            opacity: 0.7;
+            right: -24%;
+            bottom: -82px;
+            width: min(124vw, 470px);
+            opacity: 0.76;
           }
 
           .shipPerspective {
-            min-height: 280px;
+            min-height: 260px;
           }
         }
 
-        @media (max-width: 420px) {
+        @media (max-width: 430px) {
           .heroSection {
-            padding-top: 150px;
+            padding-top: 118px;
+            padding-bottom: 280px;
           }
 
           .titleMain {
-            font-size: clamp(2.05rem, 12.2vw, 2.85rem);
+            font-size: clamp(1.95rem, 11.6vw, 2.65rem);
           }
 
           .titleSub {
-            font-size: clamp(1.55rem, 8.6vw, 2.15rem);
+            font-size: clamp(1.42rem, 8.8vw, 1.95rem);
+          }
+
+          .heroMeta div {
+            font-size: 0.82rem;
           }
 
           .heroVisual {
-            right: -38%;
-            bottom: 0;
+            right: -26%;
+            bottom: -86px;
             width: 128vw;
-            opacity: 0.72;
+            opacity: 0.78;
           }
 
           .shipPerspective {
-            min-height: 250px;
+            min-height: 240px;
+          }
+        }
+
+        @media (max-width: 375px) {
+          .heroSection {
+            padding-inline: 15px;
+            padding-bottom: 260px;
+          }
+
+          .titleMain {
+            font-size: clamp(1.82rem, 11.2vw, 2.35rem);
+          }
+
+          .titleSub {
+            font-size: clamp(1.3rem, 8.2vw, 1.78rem);
+          }
+
+          .heroPrimary,
+          .heroSecondary {
+            min-height: 44px;
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+          }
+
+          .heroVisual {
+            right: -30%;
+            width: 136vw;
+            bottom: -90px;
+          }
+
+          .shipPerspective {
+            min-height: 220px;
+          }
+        }
+
+        @media (max-height: 720px) and (min-width: 761px) {
+          .heroSection {
+            padding-top: 116px;
+            padding-bottom: 48px;
+          }
+
+          .heroShell {
+            min-height: auto;
+          }
+
+          .titleMain {
+            font-size: clamp(2.8rem, 4.3vw, 4.45rem);
+          }
+
+          .titleSub {
+            font-size: clamp(1.85rem, 2.6vw, 2.85rem);
+          }
+
+          .heroMeta {
+            margin-top: 24px;
+          }
+
+          .heroActions {
+            margin-top: 24px;
+          }
+
+          .shipPerspective {
+            min-height: 430px;
           }
         }
 
         @keyframes shipApproachMobile {
           from {
             opacity: 0;
-            transform: translate3d(180px, -96px, -250px) rotateX(10deg) rotateY(-24deg) scale(0.34);
+            transform: translate3d(170px, -96px, -250px) rotateX(10deg) rotateY(-24deg) scale(0.34);
             filter: blur(8px);
           }
           to {

@@ -574,6 +574,18 @@ main {
   animation: appFirstPaintReveal 0.18s ease-out 0.95s forwards;
 }
 
+@media (max-width: 760px) {
+  main {
+    animation-delay: 2.25s;
+  }
+}
+
+@media (max-width: 430px) {
+  main {
+    animation-delay: 2.35s;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   main {
     animation-duration: 0.001s;
