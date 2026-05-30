@@ -176,7 +176,8 @@ The LLM prompt was structured with strict agenda grounding rules. The backend fi
 
 ## 7. Content Creation Check — LinkedIn Promotional Post
 
-Corporate conference planners need more than registration forms , they need intelligent event experiences that guide each delegate to the most relevant sessions. This AI powered event personalization system matches visitor interests with the right agenda session and instantly generates a professional B2B invitation draft based on the official event schedule. Built for modern executive events, it shows how automation, personalization, and live web experiences can improve attendee engagement before the event even begins.
+Corporate conference planners need more than registration forms , they need intelligent event experiences that guide each delegate to the most relevant sessions. This AI powered event personalization system matches visitor interests with the right agenda session and instantly generates a professional B2B invitation draft based on the official event schedule. Built for modern executive events, it demonstrates how automation, personalization, and live web experiences can improve attendee engagement before the event even begins.
+
 
 ---
 
