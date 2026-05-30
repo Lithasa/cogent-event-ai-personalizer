@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 const galleryImages = [
   {
@@ -38,7 +39,20 @@ const galleryImages = [
 ]
 
 export default function EventGallery() {
+  const [isMounted, setIsMounted] = useState(false)
   const loopImages = [...galleryImages, ...galleryImages]
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setIsMounted(true)
+    }, 120)
+
+    return () => window.clearTimeout(timer)
+  }, [])
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <section className="eventGallery" aria-label="Event gallery showcase">
@@ -54,7 +68,7 @@ export default function EventGallery() {
                 fill
                 sizes="(max-width: 640px) 78vw, (max-width: 1024px) 42vw, 360px"
                 className="galleryImage"
-                priority={index < 3}
+                loading="lazy"
               />
             </div>
           ))}
@@ -70,6 +84,8 @@ export default function EventGallery() {
           background: var(--navy);
           padding: clamp(0.9rem, 2vw, 1.6rem) 0;
           isolation: isolate;
+          opacity: 0;
+          animation: gallerySectionReveal 0.45s ease-out forwards;
         }
 
         .galleryDivider {
@@ -194,6 +210,16 @@ export default function EventGallery() {
 
         .galleryFrame:hover .galleryImage {
           transform: scale(1.09);
+        }
+
+        @keyframes gallerySectionReveal {
+          from {
+            opacity: 0;
+          }
+
+          to {
+            opacity: 1;
+          }
         }
 
         @keyframes galleryScrollLeft {

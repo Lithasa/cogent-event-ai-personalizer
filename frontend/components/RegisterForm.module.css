@@ -63,10 +63,11 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
   align-items: stretch;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   overflow: visible;
   box-shadow: none;
 }
@@ -381,6 +382,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: transparent;
+  box-shadow: none;
+  border: none;
 }
 
 .logoKicker {
@@ -974,4 +978,117 @@
 .emailDraft + div,
 .emailDraft + button {
   margin-top: 28px !important;
+}
+/* Outer glass removal safety:
+   Keeps the form and logos responsive without adding an outside glass panel. */
+@media (max-width: 980px) {
+  .mainGrid {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .mainGrid {
+    width: 100%;
+  }
+
+  .logoPanel {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+}
+/* Final mobile registration width refinement:
+   Reduces nested padding on small screens so the actual form becomes wider and clearer. */
+@media (max-width: 680px) {
+  .registerSection {
+    padding: 74px 10px 64px !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .mainGrid {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .formPanel {
+    width: 100% !important;
+    padding: 24px 8px !important;
+  }
+
+  .formHeading {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .formCard,
+  .loadingBox,
+  .invitationBox {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 20px 14px !important;
+    border-radius: 22px;
+    box-sizing: border-box;
+  }
+
+  .fieldGroup input,
+  .fieldGroup textarea,
+  .sessionDropdownButton {
+    border-radius: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
+
+  .logoPanel {
+    padding: 28px 10px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .registerSection {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .formPanel {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .formCard,
+  .loadingBox,
+  .invitationBox {
+    padding: 18px 12px !important;
+  }
+
+  .fieldGroup label {
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+  }
+
+  .fieldGroup input,
+  .fieldGroup textarea {
+    font-size: 0.9rem;
+  }
+
+  .sessionDropdownText strong {
+    font-size: 0.86rem;
+  }
+
+  .sessionDropdownText small {
+    font-size: 0.72rem;
+  }
 }

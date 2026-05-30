@@ -51,6 +51,7 @@ export default function Hero() {
       onMouseLeave={resetMouse}
     >
       <div className="heroBackdrop" />
+
       <div className="heroStars" aria-hidden="true">
         {stars.map((star, index) => (
           <span
@@ -106,6 +107,17 @@ export default function Hero() {
               View Agenda
             </a>
           </div>
+
+          <div className="mobileShipOnly" aria-hidden="true" style={{ display: 'none' }}>
+            <Image
+              src="/images/others/shipmove.png"
+              alt=""
+              width={920}
+              height={610}
+              priority
+              className="mobileShipImage"
+            />
+          </div>
         </div>
 
         <div className="heroVisual" aria-hidden="true">
@@ -115,7 +127,7 @@ export default function Hero() {
                 <div className="shipAura" />
 
                 <Image
-                  src="/images/others/shipmove.png"
+                  src="/images/shipmove.png"
                   alt=""
                   width={920}
                   height={610}
@@ -140,15 +152,17 @@ export default function Hero() {
           min-height: 100svh;
           overflow: hidden;
           padding: 136px clamp(42px, 5.6vw, 96px) 72px;
-          background: linear-gradient(180deg, #071423 0%, #081729 48%, #06121f 100%);
+          background:
+            radial-gradient(circle at 74% 16%, rgba(42, 154, 170, 0.16), transparent 28%),
+            radial-gradient(circle at 18% 30%, rgba(201, 168, 76, 0.08), transparent 28%),
+            linear-gradient(180deg, #071423 0%, #081729 48%, #06121f 100%);
           isolation: isolate;
+          opacity: 0;
+          animation: heroFirstPaintReveal 0.18s ease-out 0.18s forwards;
         }
 
         .heroBackdrop {
-          position: absolute;
-          inset: 0;
-          z-index: -6;
-          background: transparent;
+          display: none;
         }
 
         .heroLight {
@@ -315,6 +329,10 @@ export default function Hero() {
           margin-top: 32px;
         }
 
+        .mobileShipOnly {
+          display: none;
+        }
+
         .heroPrimary,
         .heroSecondary {
           min-height: 48px;
@@ -459,6 +477,17 @@ export default function Hero() {
           animation: shipLightPulse 6.8s 9s ease-in-out infinite;
         }
 
+
+        @keyframes heroFirstPaintReveal {
+          from {
+            opacity: 0;
+          }
+
+          to {
+            opacity: 1;
+          }
+        }
+
         @keyframes heroContentIn {
           from {
             opacity: 0;
@@ -570,29 +599,20 @@ export default function Hero() {
           .titleSub {
             font-size: clamp(1.95rem, 2.65vw, 2.95rem);
           }
-
-          .heroMeta {
-            gap: 18px;
-          }
-
-          .heroMeta div {
-            font-size: 0.9rem;
-          }
         }
 
         @media (max-width: 1180px) {
-          .heroSection {
-            padding-top: 130px;
-          }
-
           .heroShell {
-            grid-template-columns: minmax(0, 1fr) minmax(330px, 0.88fr);
-            gap: 30px;
+            grid-template-columns: minmax(0, 1fr) minmax(340px, 0.9fr);
+            gap: 34px;
           }
 
           .heroMeta {
-            flex-wrap: wrap;
-            gap: 14px 18px;
+            gap: 16px;
+          }
+
+          .heroMeta div {
+            font-size: 0.84rem;
           }
 
           .shipEntrance {
@@ -602,43 +622,32 @@ export default function Hero() {
 
         @media (max-width: 1100px) {
           .heroSection {
-            min-height: auto;
-            padding: 128px clamp(24px, 5vw, 60px) 64px;
+            padding-inline: clamp(22px, 5vw, 60px);
           }
 
           .heroShell {
             grid-template-columns: 1fr;
-            min-height: auto;
-            gap: 36px;
+            gap: 34px;
           }
 
           .heroContent {
             max-width: 860px;
           }
 
-          .titleMain,
-          .titleSub {
-            white-space: normal;
-          }
-
-          .heroVisual {
-            width: min(88vw, 640px);
-            margin: 0 auto;
-          }
-
           .shipPerspective {
-            min-height: clamp(340px, 46vw, 460px);
+            min-height: 420px;
           }
 
           .shipEntrance {
-            width: min(100%, 590px);
-            margin-inline: auto;
+            width: min(94vw, 560px);
+            margin-left: auto;
+            margin-right: auto;
           }
 
           @keyframes shipApproach {
             from {
               opacity: 0;
-              transform: translate3d(250px, -145px, -410px) rotateX(12deg) rotateY(-28deg) scale(0.24);
+              transform: translate3d(260px, -150px, -420px) rotateX(12deg) rotateY(-28deg) scale(0.24);
               filter: blur(10px);
             }
             to {
@@ -659,10 +668,6 @@ export default function Hero() {
         }
 
         @media (max-width: 900px) {
-          .heroSection {
-            padding-top: 124px;
-          }
-
           .titleMain,
           .titleSub {
             white-space: normal;
@@ -671,21 +676,17 @@ export default function Hero() {
           .heroMeta {
             flex-wrap: wrap;
           }
-
-          .heroActions {
-            gap: 12px;
-          }
         }
 
         @media (max-width: 760px) {
           .heroSection {
             min-height: 100svh;
-            padding: 132px 24px 330px;
+            padding: 132px 24px 48px;
           }
 
           .heroShell {
             display: block;
-            min-height: auto;
+            min-height: calc(100svh - 180px);
           }
 
           .heroContent {
@@ -696,20 +697,15 @@ export default function Hero() {
 
           .heroBadge {
             margin-bottom: 18px;
-            padding: 9px 12px;
-            font-size: 0.64rem;
-            letter-spacing: 0.14em;
           }
 
           .titleMain {
-            font-size: clamp(2.35rem, 10vw, 3.45rem);
+            font-size: clamp(2.45rem, 10.6vw, 3.65rem);
             margin-bottom: 12px;
-            line-height: 0.98;
           }
 
           .titleSub {
-            font-size: clamp(1.72rem, 7.5vw, 2.55rem);
-            line-height: 1.04;
+            font-size: clamp(1.82rem, 7.6vw, 2.7rem);
           }
 
           .heroMeta {
@@ -726,34 +722,24 @@ export default function Hero() {
             white-space: normal;
           }
 
-          .heroMeta :global(.metaIcon) {
-            width: 17px;
-            height: 17px;
-          }
-
           .heroActions {
-            display: grid;
-            grid-template-columns: 1fr;
             align-items: stretch;
             margin-top: 26px;
-            gap: 12px;
           }
 
           .heroPrimary,
           .heroSecondary {
             width: 100%;
             min-height: 46px;
-            font-size: 0.68rem;
           }
 
           .heroVisual {
             position: absolute;
             z-index: 1;
-            right: -20%;
-            bottom: -72px;
+            right: -24%;
+            bottom: -4px;
             width: min(112vw, 520px);
-            opacity: 0.72;
-            margin: 0;
+            opacity: 0.66;
           }
 
           .shipPerspective {
@@ -773,30 +759,13 @@ export default function Hero() {
           }
         }
 
-        @media (max-width: 640px) {
-          .heroSection {
-            padding: 128px 20px 315px;
-          }
-
-          .heroVisual {
-            right: -22%;
-            bottom: -76px;
-            width: min(118vw, 500px);
-            opacity: 0.74;
-          }
-
-          .shipPerspective {
-            min-height: 285px;
-          }
-        }
-
         @media (max-width: 520px) {
           .heroSection {
-            padding: 120px 18px 300px;
+            padding: 142px 18px 44px;
           }
 
           .heroBadge {
-            font-size: 0.58rem;
+            font-size: 0.6rem;
             letter-spacing: 0.12em;
             padding: 8px 10px;
           }
@@ -806,122 +775,54 @@ export default function Hero() {
           }
 
           .titleMain {
-            font-size: clamp(2.08rem, 11vw, 2.95rem);
+            font-size: clamp(2.28rem, 11vw, 3.15rem);
           }
 
           .titleSub {
-            font-size: clamp(1.55rem, 8.4vw, 2.18rem);
+            font-size: clamp(1.72rem, 8.4vw, 2.35rem);
           }
 
           .heroVisual {
-            right: -24%;
-            bottom: -82px;
-            width: min(124vw, 470px);
-            opacity: 0.76;
+            right: -34%;
+            bottom: 2px;
+            width: 122vw;
+            opacity: 0.7;
           }
 
           .shipPerspective {
-            min-height: 260px;
+            min-height: 280px;
           }
         }
 
-        @media (max-width: 430px) {
+        @media (max-width: 420px) {
           .heroSection {
-            padding-top: 118px;
-            padding-bottom: 280px;
+            padding-top: 150px;
           }
 
           .titleMain {
-            font-size: clamp(1.95rem, 11.6vw, 2.65rem);
+            font-size: clamp(2.05rem, 12.2vw, 2.85rem);
           }
 
           .titleSub {
-            font-size: clamp(1.42rem, 8.8vw, 1.95rem);
-          }
-
-          .heroMeta div {
-            font-size: 0.82rem;
+            font-size: clamp(1.55rem, 8.6vw, 2.15rem);
           }
 
           .heroVisual {
-            right: -26%;
-            bottom: -86px;
+            right: -38%;
+            bottom: 0;
             width: 128vw;
-            opacity: 0.78;
+            opacity: 0.72;
           }
 
           .shipPerspective {
-            min-height: 240px;
-          }
-        }
-
-        @media (max-width: 375px) {
-          .heroSection {
-            padding-inline: 15px;
-            padding-bottom: 260px;
-          }
-
-          .titleMain {
-            font-size: clamp(1.82rem, 11.2vw, 2.35rem);
-          }
-
-          .titleSub {
-            font-size: clamp(1.3rem, 8.2vw, 1.78rem);
-          }
-
-          .heroPrimary,
-          .heroSecondary {
-            min-height: 44px;
-            font-size: 0.62rem;
-            letter-spacing: 0.1em;
-          }
-
-          .heroVisual {
-            right: -30%;
-            width: 136vw;
-            bottom: -90px;
-          }
-
-          .shipPerspective {
-            min-height: 220px;
-          }
-        }
-
-        @media (max-height: 720px) and (min-width: 761px) {
-          .heroSection {
-            padding-top: 116px;
-            padding-bottom: 48px;
-          }
-
-          .heroShell {
-            min-height: auto;
-          }
-
-          .titleMain {
-            font-size: clamp(2.8rem, 4.3vw, 4.45rem);
-          }
-
-          .titleSub {
-            font-size: clamp(1.85rem, 2.6vw, 2.85rem);
-          }
-
-          .heroMeta {
-            margin-top: 24px;
-          }
-
-          .heroActions {
-            margin-top: 24px;
-          }
-
-          .shipPerspective {
-            min-height: 430px;
+            min-height: 250px;
           }
         }
 
         @keyframes shipApproachMobile {
           from {
             opacity: 0;
-            transform: translate3d(170px, -96px, -250px) rotateX(10deg) rotateY(-24deg) scale(0.34);
+            transform: translate3d(180px, -96px, -250px) rotateX(10deg) rotateY(-24deg) scale(0.34);
             filter: blur(8px);
           }
           to {
@@ -940,6 +841,124 @@ export default function Hero() {
           }
         }
 
+
+        /* Final mobile solution:
+           Use a separate normal-flow ship image under the buttons.
+           This avoids all desktop 3D transform/perspective cropping on phones. */
+        @media (max-width: 760px) {
+          .heroSection {
+            min-height: auto !important;
+            padding-bottom: 44px !important;
+          }
+
+          .heroShell {
+            display: block !important;
+            min-height: auto !important;
+          }
+
+          .heroContent {
+            position: relative !important;
+            z-index: 4 !important;
+            max-width: 100% !important;
+          }
+
+          .heroVisual {
+            display: none !important;
+          }
+
+          .mobileShipOnly {
+            display: block !important;
+            width: 100% !important;
+            margin: 2rem auto 0 !important;
+            pointer-events: none !important;
+            animation: mobileShipFadeUp 1.05s cubic-bezier(0.16, 0.88, 0.22, 1) both;
+          }
+
+          .mobileShipOnly :global(.mobileShipImage) {
+            display: block !important;
+            width: min(92vw, 360px) !important;
+            height: auto !important;
+            margin: 0 auto !important;
+            object-fit: contain !important;
+            object-position: center bottom !important;
+            filter:
+              drop-shadow(0 20px 24px rgba(0, 0, 0, 0.28))
+              drop-shadow(0 0 16px rgba(45, 177, 236, 0.14)) !important;
+            animation: mobileShipGentleFloat 6.8s ease-in-out 1.05s infinite;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .mobileShipOnly {
+            margin-top: 1.7rem !important;
+          }
+
+          .mobileShipOnly :global(.mobileShipImage) {
+            width: min(90vw, 330px) !important;
+          }
+        }
+
+        @media (max-width: 430px) {
+          .mobileShipOnly {
+            margin-top: 1.55rem !important;
+          }
+
+          .mobileShipOnly :global(.mobileShipImage) {
+            width: min(88vw, 305px) !important;
+          }
+        }
+
+        @media (max-width: 375px) {
+          .mobileShipOnly :global(.mobileShipImage) {
+            width: min(86vw, 285px) !important;
+          }
+        }
+
+        @media (max-width: 350px) {
+          .mobileShipOnly :global(.mobileShipImage) {
+            width: min(84vw, 265px) !important;
+          }
+        }
+
+        @keyframes mobileShipFadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(18px) scale(0.94);
+            filter: blur(5px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+          }
+        }
+
+        @keyframes mobileShipGentleFloat {
+          0%, 100% {
+            transform: translateY(0);
+          }
+
+          50% {
+            transform: translateY(-7px);
+          }
+        }
+
+
+        /* Hero flash + glow safety:
+           Keep hero background plain navy and hide decorative glow layers. */
+        .heroSection {
+          background: #071423 !important;
+        }
+
+        .heroBackdrop,
+        .heroLight,
+        .heroLightOne,
+        .heroLightTwo,
+        .shipAura {
+          display: none !important;
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .heroSection,
           .heroSection * {
@@ -947,6 +966,10 @@ export default function Hero() {
             animation-iteration-count: 1 !important;
             transition-duration: 0.001ms !important;
             scroll-behavior: auto !important;
+          }
+
+          .heroSection {
+            opacity: 1 !important;
           }
         }
       `}</style>

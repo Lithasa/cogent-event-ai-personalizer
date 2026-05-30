@@ -174,15 +174,23 @@ export default function Speakers() {
                       height: '100%',
                       borderRadius: '999px',
                       overflow: 'hidden',
-                      background: '#ffffff',
+                      background: '#f8f8f4',
                     }}
                   >
                     <Image
                       src={speaker.image}
                       alt={`${speaker.name} speaker profile`}
-                      fill
-                      sizes="154px"
-                      style={{ objectFit: 'cover', objectPosition: 'center' }}
+                      width={154}
+                      height={154}
+                      loading="eager"
+                      unoptimized
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'block',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                      }}
                     />
                   </div>
                 </div>
