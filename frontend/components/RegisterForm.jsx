@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   ChevronDown,
   Mail,
-  Printer,
   Ship,
   User,
 } from 'lucide-react'
@@ -154,9 +153,6 @@ export default function RegisterForm() {
     setIsSessionMenuOpen(false)
   }
 
-  const handlePrintInvitation = () => {
-    window.print()
-  }
 
   return (
     <section id="register" className={styles.registerSection}>
@@ -284,14 +280,6 @@ export default function RegisterForm() {
                 </div>
 
                 <div className={styles.actionRow}>
-                  <button
-                    type="button"
-                    className={styles.secondaryButton}
-                    onClick={handlePrintInvitation}
-                  >
-                    <Printer size={17} />
-                    Print Invitation
-                  </button>
 
                   <button
                     type="button"
