@@ -103,8 +103,8 @@ export default function Footer() {
                   <Image
                     src={award.src}
                     alt={award.alt}
-                    width={116}
-                    height={122}
+                    fill
+                    sizes={index === 3 ? '(max-width: 720px) 58px, 72px' : '(max-width: 720px) 84px, 116px'}
                     className={`award-image ${index === 3 ? 'fourth-award-image' : ''}`}
                   />
                 </div>
@@ -265,22 +265,20 @@ export default function Footer() {
 
         .awards-row {
           display: flex;
-          align-items: center;
+          align-items: flex-end;
           gap: 14px;
           margin-top: 20px;
           flex-wrap: wrap;
         }
 
         .award-card {
+          position: relative;
+          flex: 0 0 auto;
           width: 116px;
           height: 126px;
           background: #000000;
           border-radius: 2px;
           overflow: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 7px;
           box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
           transition:
             transform 0.3s ease,
@@ -289,9 +287,11 @@ export default function Footer() {
         }
 
         .fourth-award-card {
+          width: 72px;
+          height: 126px;
           background: #000000;
-          padding: 0;
           border: 1px solid rgba(255, 255, 255, 0.12);
+          overflow: hidden;
         }
 
         .award-card:hover {
@@ -303,17 +303,14 @@ export default function Footer() {
         }
 
         .award-image {
-          width: 100%;
-          height: 100%;
           object-fit: contain;
-          display: block;
+          object-position: center;
         }
 
         .fourth-award-image {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          object-position: center;
+          object-fit: cover;
+          object-position: center top;
+          transform: scale(1.04);
         }
 
         .office-list {
@@ -474,16 +471,17 @@ export default function Footer() {
 
           .awards-row {
             gap: 10px;
+            align-items: flex-end;
           }
 
           .award-card {
-            width: 86px;
-            height: 98px;
-            padding: 5px;
+            width: 84px;
+            height: 92px;
           }
 
           .fourth-award-card {
-            padding: 0;
+            width: 58px;
+            height: 86px;
           }
 
           .footer-bottom {
@@ -506,6 +504,23 @@ export default function Footer() {
             font-size: 15px;
           }
         }
+
+        @media (max-width: 390px) {
+          .awards-row {
+            gap: 8px;
+          }
+
+          .award-card {
+            width: 76px;
+            height: 84px;
+          }
+
+          .fourth-award-card {
+            width: 52px;
+            height: 84px;
+          }
+        }
+
       `}</style>
     </footer>
   )
