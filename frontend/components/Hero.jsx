@@ -455,10 +455,7 @@ export default function Hero() {
           animation: shipLightPulse 6.8s 9s ease-in-out infinite;
         }
 
-        /* ══════════════════════════════════════════════════
-           DESKTOP animation — clip-path + translateY
-           Works great on all desktop/laptop browsers.
-        ══════════════════════════════════════════════════ */
+      
         @keyframes revealFromTop {
           0% {
             clip-path: inset(0 0 100% 0);
@@ -491,13 +488,7 @@ export default function Hero() {
           }
         }
 
-        /* ══════════════════════════════════════════════════
-           MOBILE animation — opacity + translateY ONLY.
-           clip-path is NOT used here because iOS Safari and
-           many Android browsers don't GPU-accelerate it,
-           causing elements to freeze or stay permanently
-           hidden. This version is universally compatible.
-        ══════════════════════════════════════════════════ */
+       
         @keyframes revealFromTopMobile {
           0% {
             opacity: 0;
@@ -520,11 +511,7 @@ export default function Hero() {
           }
         }
 
-        /* ══════════════════════════════════════════════════
-           MOBILE OVERRIDE — swap revealFromTop for
-           revealFromTopMobile on all touch-screen breakpoints.
-           Delays are identical; only the keyframe changes.
-        ══════════════════════════════════════════════════ */
+        
         @media (max-width: 900px) {
           .heroBadge {
             animation: revealFromTopMobile 7s ease-out 0.75s infinite both;
