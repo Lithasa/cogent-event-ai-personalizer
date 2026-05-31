@@ -18,11 +18,9 @@ export default function Hero() {
   const handleMouseMove = (event) => {
     const section = heroRef.current
     if (!section) return
-
     const rect = section.getBoundingClientRect()
     const x = (event.clientX - rect.left) / rect.width - 0.5
     const y = (event.clientY - rect.top) / rect.height - 0.5
-
     section.style.setProperty('--shipX', `${x * 12}px`)
     section.style.setProperty('--shipY', `${y * 7}px`)
     section.style.setProperty('--shipRotateX', `${y * -4}deg`)
@@ -34,7 +32,6 @@ export default function Hero() {
   const resetMouse = () => {
     const section = heroRef.current
     if (!section) return
-
     section.style.setProperty('--shipX', '0px')
     section.style.setProperty('--shipY', '0px')
     section.style.setProperty('--shipRotateX', '0deg')
@@ -85,12 +82,10 @@ export default function Hero() {
               <CalendarDays className="metaIcon" aria-hidden="true" />
               <span>13th November 2024</span>
             </div>
-
             <div>
               <Clock3 className="metaIcon" aria-hidden="true" />
               <span>09:30 AM — 01:00 PM</span>
             </div>
-
             <div>
               <MapPin className="metaIcon" aria-hidden="true" />
               <span>Marriott Resort, The Palm, Dubai</span>
@@ -102,7 +97,6 @@ export default function Hero() {
               <span>Secure Your Seat</span>
               <b>→</b>
             </a>
-
             <a href="#agenda" className="heroSecondary">
               View Agenda
             </a>
@@ -125,7 +119,6 @@ export default function Hero() {
             <div className="shipEntrance">
               <div className="shipStage">
                 <div className="shipAura" />
-
                 <Image
                   src="/images/others/shipmove.png"
                   alt=""
@@ -161,28 +154,19 @@ export default function Hero() {
           animation: heroFirstPaintReveal 0.18s ease-out 0.18s forwards;
         }
 
-        .heroBackdrop {
-          display: none;
-        }
-
-        .heroLight {
-          display: none;
-        }
+        .heroBackdrop { display: none; }
+        .heroLight    { display: none; }
 
         .heroLightOne {
-          width: 430px;
-          height: 430px;
-          right: 8%;
-          top: 17%;
+          width: 430px; height: 430px;
+          right: 8%; top: 17%;
           background: rgba(42, 154, 170, 0.15);
           animation: glowFloat 9s ease-in-out infinite;
         }
 
         .heroLightTwo {
-          width: 300px;
-          height: 300px;
-          right: 28%;
-          bottom: 12%;
+          width: 300px; height: 300px;
+          right: 28%; bottom: 12%;
           background: rgba(201, 168, 76, 0.08);
           animation: glowFloat 10s 1.4s ease-in-out infinite;
         }
@@ -216,12 +200,24 @@ export default function Hero() {
           gap: clamp(30px, 4vw, 78px);
         }
 
+        /* ── Content container — no own animation,
+           children handle their own entrance/loop ── */
         .heroContent {
           max-width: 980px;
           text-align: left;
-          animation: heroContentIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
+        /* ══════════════════════════════════════════════════
+           CONTENT REVEAL ANIMATIONS
+           Each block slides in from the top of its own
+           bounding box, holds, then exits back up.
+           Technique: clip-path inset (creates the "window")
+           + translateY (gives the sliding motion).
+           The animation repeats infinitely with staggered
+           delays so elements enter one after another.
+        ══════════════════════════════════════════════════ */
+
+        /* Badge — first in, delay 0s */
         .heroBadge {
           width: fit-content;
           display: inline-flex;
@@ -231,7 +227,7 @@ export default function Hero() {
           padding: 11px 16px;
           border: 1px solid rgba(201, 168, 76, 0.42);
           background:
-            linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025)),
+            linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0.025)),
             rgba(8, 20, 38, 0.54);
           color: #f0d68a;
           backdrop-filter: blur(14px);
@@ -241,8 +237,9 @@ export default function Hero() {
           letter-spacing: 0.18em;
           text-transform: uppercase;
           box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.1),
-            0 18px 50px rgba(0, 0, 0, 0.18);
+            inset 0 1px 0 rgba(255,255,255,0.1),
+            0 18px 50px rgba(0,0,0,0.18);
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0s infinite both;
         }
 
         .badgeDot {
@@ -267,12 +264,15 @@ export default function Hero() {
           white-space: nowrap;
         }
 
+        /* Title main — delay 0.14s */
         .titleMain {
           color: #f4f1ea;
           font-size: clamp(3.45rem, 5.25vw, 5.75rem);
           margin-bottom: 18px;
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.14s infinite both;
         }
 
+        /* Title sub — delay 0.28s, shimmer runs concurrently */
         .titleSub {
           width: fit-content;
           max-width: 100%;
@@ -280,17 +280,15 @@ export default function Hero() {
           line-height: 1.02;
           background: linear-gradient(
             90deg,
-            #fff1be 0%,
-            #f0d68a 24%,
-            #c9a84c 52%,
-            #fff6ce 78%,
-            #c9a84c 100%
+            #fff1be 0%, #f0d68a 24%, #c9a84c 52%, #fff6ce 78%, #c9a84c 100%
           );
           background-size: 220%;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          animation: titleShine 5.5s linear infinite;
+          animation:
+            revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.28s infinite both,
+            titleShine 5.5s linear 0s infinite;
         }
 
         .heroMeta {
@@ -312,6 +310,17 @@ export default function Hero() {
           white-space: nowrap;
         }
 
+        /* Meta items — staggered 0.42 / 0.56 / 0.70s */
+        .heroMeta div:nth-child(1) {
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.42s infinite both;
+        }
+        .heroMeta div:nth-child(2) {
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.56s infinite both;
+        }
+        .heroMeta div:nth-child(3) {
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.70s infinite both;
+        }
+
         .heroMeta :global(.metaIcon) {
           width: 18px;
           height: 18px;
@@ -321,17 +330,17 @@ export default function Hero() {
           flex-shrink: 0;
         }
 
+        /* Action buttons — last in, delay 0.84s */
         .heroActions {
           display: flex;
           align-items: center;
           flex-wrap: wrap;
           gap: 15px;
           margin-top: 32px;
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.84s infinite both;
         }
 
-        .mobileShipOnly {
-          display: none;
-        }
+        .mobileShipOnly { display: none; }
 
         .heroPrimary,
         .heroSecondary {
@@ -368,20 +377,15 @@ export default function Hero() {
         .heroPrimary::before {
           content: '';
           position: absolute;
-          top: -70%;
-          left: -40%;
-          width: 34%;
-          height: 240%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
+          top: -70%; left: -40%;
+          width: 34%; height: 240%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent);
           transform: rotate(20deg) translateX(-130%);
           transition: transform 0.7s ease;
         }
 
         .heroPrimary span,
-        .heroPrimary b {
-          position: relative;
-          z-index: 1;
-        }
+        .heroPrimary b { position: relative; z-index: 1; }
 
         .heroPrimary b {
           font-size: 0.96rem;
@@ -395,13 +399,8 @@ export default function Hero() {
             inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
-        .heroPrimary:hover::before {
-          transform: rotate(20deg) translateX(430%);
-        }
-
-        .heroPrimary:hover b {
-          transform: translateX(5px);
-        }
+        .heroPrimary:hover::before { transform: rotate(20deg) translateX(430%); }
+        .heroPrimary:hover b       { transform: translateX(5px); }
 
         .heroSecondary {
           padding: 0 1.26rem;
@@ -450,8 +449,7 @@ export default function Hero() {
 
         .shipStage {
           position: relative;
-          width: 100%;
-          height: 100%;
+          width: 100%; height: 100%;
           transform-style: preserve-3d;
           transform:
             translate3d(var(--shipX), var(--shipY), 0)
@@ -460,43 +458,74 @@ export default function Hero() {
           transition: transform 0.24s ease-out;
         }
 
-        .shipAura {
-          display: none;
-        }
+        .shipAura { display: none; }
 
         .shipImage {
           position: absolute;
           inset: 0;
-          width: 100%;
-          height: 100%;
+          width: 100%; height: 100%;
           object-fit: contain;
           transform: translateZ(95px) scale(1);
           filter:
-            drop-shadow(0 28px 28px rgba(0, 0, 0, 0.32))
-            drop-shadow(0 0 18px rgba(45, 177, 236, 0.16));
+            drop-shadow(0 28px 28px rgba(0,0,0,0.32))
+            drop-shadow(0 0 18px rgba(45,177,236,0.16));
           animation: shipLightPulse 6.8s 9s ease-in-out infinite;
         }
 
-
-        @keyframes heroFirstPaintReveal {
-          from {
+        /* ══════════════════════════════════════════════════
+           THE CORE ANIMATION
+           1. Start: clipped from bottom (inset 100%) + shifted up → nothing visible
+           2. Slide in: clip opens top-first + element drops to natural position
+           3. Hold: fully visible at rest
+           4. Exit: element shifts back up + clip closes from bottom again
+           5. Hold hidden → next cycle
+        ══════════════════════════════════════════════════ */
+        @keyframes revealFromTop {
+          /* Hidden above — clip closed, element shifted up */
+          0% {
+            clip-path: inset(0 0 100% 0);
+            transform: translateY(-26px);
             opacity: 0;
+            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
           }
 
-          to {
+          /* Fully in — clip open, element at rest */
+          18% {
+            clip-path: inset(0 0 0% 0);
+            transform: translateY(0px);
             opacity: 1;
+            animation-timing-function: linear;
+          }
+
+          /* Stay visible */
+          68% {
+            clip-path: inset(0 0 0% 0);
+            transform: translateY(0px);
+            opacity: 1;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.8, 0);
+          }
+
+          /* Exit back up — clip closes, element lifts */
+          84% {
+            clip-path: inset(0 0 100% 0);
+            transform: translateY(-26px);
+            opacity: 0;
+            animation-timing-function: linear;
+          }
+
+          /* Hold hidden until next cycle */
+          100% {
+            clip-path: inset(0 0 100% 0);
+            transform: translateY(-26px);
+            opacity: 0;
           }
         }
 
-        @keyframes heroContentIn {
-          from {
-            opacity: 0;
-            transform: translateX(-28px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+        /* ══ All existing keyframes unchanged ══ */
+
+        @keyframes heroFirstPaintReveal {
+          from { opacity: 0; }
+          to   { opacity: 1; }
         }
 
         @keyframes shipApproach {
@@ -513,92 +542,55 @@ export default function Hero() {
         }
 
         @keyframes shipGentleFloat {
-          0%, 100% {
-            transform: translate3d(-180px, 0, 0) rotateX(0deg) rotateY(-6deg) scale(1);
-          }
-          50% {
-            transform: translate3d(-180px, -12px, 0) rotateX(0deg) rotateY(-6deg) scale(1);
-          }
+          0%, 100% { transform: translate3d(-180px, 0, 0) rotateX(0deg) rotateY(-6deg) scale(1); }
+          50%       { transform: translate3d(-180px, -12px, 0) rotateX(0deg) rotateY(-6deg) scale(1); }
         }
 
         @keyframes shipLightPulse {
           0%, 100% {
             filter:
-              drop-shadow(0 28px 28px rgba(0, 0, 0, 0.32))
-              drop-shadow(0 0 18px rgba(45, 177, 236, 0.16));
+              drop-shadow(0 28px 28px rgba(0,0,0,0.32))
+              drop-shadow(0 0 18px rgba(45,177,236,0.16));
           }
           50% {
             filter:
-              drop-shadow(0 32px 32px rgba(0, 0, 0, 0.36))
-              drop-shadow(0 0 28px rgba(45, 177, 236, 0.24));
+              drop-shadow(0 32px 32px rgba(0,0,0,0.36))
+              drop-shadow(0 0 28px rgba(45,177,236,0.24));
           }
         }
 
         @keyframes glowFloat {
-          0%, 100% {
-            opacity: 0.55;
-            scale: 1;
-          }
-          50% {
-            opacity: 0.8;
-            scale: 1.06;
-          }
+          0%, 100% { opacity: 0.55; scale: 1;    }
+          50%       { opacity: 0.8;  scale: 1.06; }
         }
 
         @keyframes pulseDot {
-          0% {
-            box-shadow: 0 0 0 0 rgba(42, 239, 170, 0.55);
-          }
-          70% {
-            box-shadow: 0 0 0 10px rgba(42, 239, 170, 0);
-          }
-          100% {
-            box-shadow: 0 0 0 0 rgba(42, 239, 170, 0);
-          }
+          0%   { box-shadow: 0 0 0 0    rgba(42, 239, 170, 0.55); }
+          70%  { box-shadow: 0 0 0 10px rgba(42, 239, 170, 0);    }
+          100% { box-shadow: 0 0 0 0    rgba(42, 239, 170, 0);    }
         }
 
         @keyframes starPulse {
-          0%, 100% {
-            opacity: 0.25;
-            transform: scale(0.85);
-          }
-          50% {
-            opacity: 0.9;
-            transform: scale(1.25);
-          }
+          0%, 100% { opacity: 0.25; transform: scale(0.85); }
+          50%       { opacity: 0.9;  transform: scale(1.25); }
         }
 
         @keyframes titleShine {
-          0% {
-            background-position: -160% center;
-          }
-          100% {
-            background-position: 160% center;
-          }
+          0%   { background-position: -160% center; }
+          100% { background-position:  160% center; }
         }
 
+        /* ══════════ Responsive — all unchanged ══════════ */
+
         @media (max-width: 1400px) {
-          .titleMain {
-            font-size: clamp(3.2rem, 4.7vw, 5.25rem);
-          }
-
-          .titleSub {
-            font-size: clamp(2.05rem, 2.95vw, 3.25rem);
-          }
-
-          .heroContent {
-            max-width: 920px;
-          }
+          .titleMain  { font-size: clamp(3.2rem, 4.7vw, 5.25rem); }
+          .titleSub   { font-size: clamp(2.05rem, 2.95vw, 3.25rem); }
+          .heroContent { max-width: 920px; }
         }
 
         @media (max-width: 1320px) {
-          .titleMain {
-            font-size: clamp(3rem, 4.35vw, 4.8rem);
-          }
-
-          .titleSub {
-            font-size: clamp(1.95rem, 2.65vw, 2.95rem);
-          }
+          .titleMain { font-size: clamp(3rem, 4.35vw, 4.8rem); }
+          .titleSub  { font-size: clamp(1.95rem, 2.65vw, 2.95rem); }
         }
 
         @media (max-width: 1180px) {
@@ -606,44 +598,21 @@ export default function Hero() {
             grid-template-columns: minmax(0, 1fr) minmax(340px, 0.9fr);
             gap: 34px;
           }
-
-          .heroMeta {
-            gap: 16px;
-          }
-
-          .heroMeta div {
-            font-size: 0.84rem;
-          }
-
-          .shipEntrance {
-            width: min(100%, 560px);
-          }
+          .heroMeta { gap: 16px; }
+          .heroMeta div { font-size: 0.84rem; }
+          .shipEntrance { width: min(100%, 560px); }
         }
 
         @media (max-width: 1100px) {
-          .heroSection {
-            padding-inline: clamp(22px, 5vw, 60px);
-          }
-
-          .heroShell {
-            grid-template-columns: 1fr;
-            gap: 34px;
-          }
-
-          .heroContent {
-            max-width: 860px;
-          }
-
-          .shipPerspective {
-            min-height: 420px;
-          }
-
+          .heroSection { padding-inline: clamp(22px, 5vw, 60px); }
+          .heroShell { grid-template-columns: 1fr; gap: 34px; }
+          .heroContent { max-width: 860px; }
+          .shipPerspective { min-height: 420px; }
           .shipEntrance {
             width: min(94vw, 560px);
             margin-left: auto;
             margin-right: auto;
           }
-
           @keyframes shipApproach {
             from {
               opacity: 0;
@@ -656,167 +625,71 @@ export default function Hero() {
               filter: blur(0);
             }
           }
-
           @keyframes shipGentleFloat {
-            0%, 100% {
-              transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(-6deg) scale(1);
-            }
-            50% {
-              transform: translate3d(0, -10px, 0) rotateX(0deg) rotateY(-6deg) scale(1);
-            }
+            0%, 100% { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(-6deg) scale(1); }
+            50%       { transform: translate3d(0, -10px, 0) rotateX(0deg) rotateY(-6deg) scale(1); }
           }
         }
 
         @media (max-width: 900px) {
-          .titleMain,
-          .titleSub {
-            white-space: normal;
-          }
-
-          .heroMeta {
-            flex-wrap: wrap;
-          }
+          .titleMain, .titleSub { white-space: normal; }
+          .heroMeta { flex-wrap: wrap; }
         }
 
         @media (max-width: 760px) {
-          .heroSection {
-            min-height: 100svh;
-            padding: 132px 24px 48px;
-          }
-
-          .heroShell {
-            display: block;
-            min-height: calc(100svh - 180px);
-          }
-
-          .heroContent {
-            position: relative;
-            z-index: 3;
-            max-width: 100%;
-          }
-
-          .heroBadge {
-            margin-bottom: 18px;
-          }
-
-          .titleMain {
-            font-size: clamp(2.45rem, 10.6vw, 3.65rem);
-            margin-bottom: 12px;
-          }
-
-          .titleSub {
-            font-size: clamp(1.82rem, 7.6vw, 2.7rem);
-          }
-
+          .heroSection { min-height: 100svh; padding: 132px 24px 48px; }
+          .heroShell { display: block; min-height: calc(100svh - 180px); }
+          .heroContent { position: relative; z-index: 3; max-width: 100%; }
+          .heroBadge { margin-bottom: 18px; }
+          .titleMain { font-size: clamp(2.45rem, 10.6vw, 3.65rem); margin-bottom: 12px; }
+          .titleSub  { font-size: clamp(1.82rem, 7.6vw, 2.7rem); }
           .heroMeta {
             display: grid;
             grid-template-columns: 1fr;
             gap: 12px;
             margin-top: 24px;
           }
-
           .heroMeta div {
             width: 100%;
             font-size: 0.86rem;
             line-height: 1.35;
             white-space: normal;
           }
-
-          .heroActions {
-            align-items: stretch;
-            margin-top: 26px;
-          }
-
-          .heroPrimary,
-          .heroSecondary {
-            width: 100%;
-            min-height: 46px;
-          }
-
+          .heroActions { align-items: stretch; margin-top: 26px; }
+          .heroPrimary, .heroSecondary { width: 100%; min-height: 46px; }
           .heroVisual {
             position: absolute;
             z-index: 1;
-            right: -24%;
-            bottom: -4px;
+            right: -24%; bottom: -4px;
             width: min(112vw, 520px);
             opacity: 0.66;
           }
-
-          .shipPerspective {
-            min-height: 300px;
-            display: block;
-          }
-
+          .shipPerspective { min-height: 300px; display: block; }
           .shipEntrance {
             width: 100%;
             animation:
               shipApproachMobile 6.2s cubic-bezier(0.16, 0.88, 0.22, 1) forwards,
               shipGentleFloatMobile 7.2s ease-in-out 6.2s infinite;
           }
-
-          .shipImage {
-            animation-delay: 6.2s;
-          }
+          .shipImage { animation-delay: 6.2s; }
         }
 
         @media (max-width: 520px) {
-          .heroSection {
-            padding: 142px 18px 44px;
-          }
-
-          .heroBadge {
-            font-size: 0.6rem;
-            letter-spacing: 0.12em;
-            padding: 8px 10px;
-          }
-
-          .heroTitle {
-            letter-spacing: -0.04em;
-          }
-
-          .titleMain {
-            font-size: clamp(2.28rem, 11vw, 3.15rem);
-          }
-
-          .titleSub {
-            font-size: clamp(1.72rem, 8.4vw, 2.35rem);
-          }
-
-          .heroVisual {
-            right: -34%;
-            bottom: 2px;
-            width: 122vw;
-            opacity: 0.7;
-          }
-
-          .shipPerspective {
-            min-height: 280px;
-          }
+          .heroSection { padding: 142px 18px 44px; }
+          .heroBadge { font-size: 0.6rem; letter-spacing: 0.12em; padding: 8px 10px; }
+          .heroTitle { letter-spacing: -0.04em; }
+          .titleMain { font-size: clamp(2.28rem, 11vw, 3.15rem); }
+          .titleSub  { font-size: clamp(1.72rem, 8.4vw, 2.35rem); }
+          .heroVisual { right: -34%; bottom: 2px; width: 122vw; opacity: 0.7; }
+          .shipPerspective { min-height: 280px; }
         }
 
         @media (max-width: 420px) {
-          .heroSection {
-            padding-top: 150px;
-          }
-
-          .titleMain {
-            font-size: clamp(2.05rem, 12.2vw, 2.85rem);
-          }
-
-          .titleSub {
-            font-size: clamp(1.55rem, 8.6vw, 2.15rem);
-          }
-
-          .heroVisual {
-            right: -38%;
-            bottom: 0;
-            width: 128vw;
-            opacity: 0.72;
-          }
-
-          .shipPerspective {
-            min-height: 250px;
-          }
+          .heroSection { padding-top: 150px; }
+          .titleMain { font-size: clamp(2.05rem, 12.2vw, 2.85rem); }
+          .titleSub  { font-size: clamp(1.55rem, 8.6vw, 2.15rem); }
+          .heroVisual { right: -38%; bottom: 0; width: 128vw; opacity: 0.72; }
+          .shipPerspective { min-height: 250px; }
         }
 
         @keyframes shipApproachMobile {
@@ -833,39 +706,16 @@ export default function Hero() {
         }
 
         @keyframes shipGentleFloatMobile {
-          0%, 100% {
-            transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(-6deg) scale(1);
-          }
-          50% {
-            transform: translate3d(0, -8px, 0) rotateX(0deg) rotateY(-6deg) scale(1);
-          }
+          0%, 100% { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(-6deg) scale(1); }
+          50%       { transform: translate3d(0, -8px, 0) rotateX(0deg) rotateY(-6deg) scale(1); }
         }
 
-
-        /* Final mobile solution:
-           Use a separate normal-flow ship image under the buttons.
-           This avoids all desktop 3D transform/perspective cropping on phones. */
+        /* Mobile ship swap — unchanged */
         @media (max-width: 760px) {
-          .heroSection {
-            min-height: auto !important;
-            padding-bottom: 44px !important;
-          }
-
-          .heroShell {
-            display: block !important;
-            min-height: auto !important;
-          }
-
-          .heroContent {
-            position: relative !important;
-            z-index: 4 !important;
-            max-width: 100% !important;
-          }
-
-          .heroVisual {
-            display: none !important;
-          }
-
+          .heroSection       { min-height: auto !important; padding-bottom: 44px !important; }
+          .heroShell         { display: block !important; min-height: auto !important; }
+          .heroContent       { position: relative !important; z-index: 4 !important; max-width: 100% !important; }
+          .heroVisual        { display: none !important; }
           .mobileShipOnly {
             display: block !important;
             width: 100% !important;
@@ -873,7 +723,6 @@ export default function Hero() {
             pointer-events: none !important;
             animation: mobileShipFadeUp 1.05s cubic-bezier(0.16, 0.88, 0.22, 1) both;
           }
-
           .mobileShipOnly :global(.mobileShipImage) {
             display: block !important;
             width: min(92vw, 360px) !important;
@@ -882,83 +731,47 @@ export default function Hero() {
             object-fit: contain !important;
             object-position: center bottom !important;
             filter:
-              drop-shadow(0 20px 24px rgba(0, 0, 0, 0.28))
-              drop-shadow(0 0 16px rgba(45, 177, 236, 0.14)) !important;
+              drop-shadow(0 20px 24px rgba(0,0,0,0.28))
+              drop-shadow(0 0 16px rgba(45,177,236,0.14)) !important;
             animation: mobileShipGentleFloat 6.8s ease-in-out 1.05s infinite;
           }
         }
 
         @media (max-width: 520px) {
-          .mobileShipOnly {
-            margin-top: 1.7rem !important;
-          }
-
-          .mobileShipOnly :global(.mobileShipImage) {
-            width: min(90vw, 330px) !important;
-          }
+          .mobileShipOnly { margin-top: 1.7rem !important; }
+          .mobileShipOnly :global(.mobileShipImage) { width: min(90vw, 330px) !important; }
         }
 
         @media (max-width: 430px) {
-          .mobileShipOnly {
-            margin-top: 1.55rem !important;
-          }
-
-          .mobileShipOnly :global(.mobileShipImage) {
-            width: min(88vw, 305px) !important;
-          }
+          .mobileShipOnly { margin-top: 1.55rem !important; }
+          .mobileShipOnly :global(.mobileShipImage) { width: min(88vw, 305px) !important; }
         }
 
         @media (max-width: 375px) {
-          .mobileShipOnly :global(.mobileShipImage) {
-            width: min(86vw, 285px) !important;
-          }
+          .mobileShipOnly :global(.mobileShipImage) { width: min(86vw, 285px) !important; }
         }
 
         @media (max-width: 350px) {
-          .mobileShipOnly :global(.mobileShipImage) {
-            width: min(84vw, 265px) !important;
-          }
+          .mobileShipOnly :global(.mobileShipImage) { width: min(84vw, 265px) !important; }
         }
 
         @keyframes mobileShipFadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(18px) scale(0.94);
-            filter: blur(5px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0);
-          }
+          from { opacity: 0; transform: translateY(18px) scale(0.94); filter: blur(5px); }
+          to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
         @keyframes mobileShipGentleFloat {
-          0%, 100% {
-            transform: translateY(0);
-          }
-
-          50% {
-            transform: translateY(-7px);
-          }
+          0%, 100% { transform: translateY(0); }
+          50%       { transform: translateY(-7px); }
         }
 
-
-        /* Hero flash + glow safety:
-           Keep hero background plain navy and hide decorative glow layers. */
-        .heroSection {
-          background: #071423 !important;
-        }
-
-        .heroBackdrop,
-        .heroLight,
-        .heroLightOne,
-        .heroLightTwo,
-        .shipAura {
+        /* Safety overrides — unchanged */
+        .heroSection { background: #071423 !important; }
+        .heroBackdrop, .heroLight, .heroLightOne, .heroLightTwo, .shipAura {
           display: none !important;
         }
 
+        /* Reduced motion — all animations collapsed */
         @media (prefers-reduced-motion: reduce) {
           .heroSection,
           .heroSection * {
@@ -967,8 +780,12 @@ export default function Hero() {
             transition-duration: 0.001ms !important;
             scroll-behavior: auto !important;
           }
-
-          .heroSection {
+          .heroSection { opacity: 1 !important; }
+          /* Make all content fully visible when motion is reduced */
+          .heroBadge, .titleMain, .titleSub,
+          .heroMeta div, .heroActions {
+            clip-path: none !important;
+            transform: none !important;
             opacity: 1 !important;
           }
         }
