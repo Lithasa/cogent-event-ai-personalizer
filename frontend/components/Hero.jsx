@@ -200,24 +200,27 @@ export default function Hero() {
           gap: clamp(30px, 4vw, 78px);
         }
 
-        /* ── Content container — no own animation,
-           children handle their own entrance/loop ── */
         .heroContent {
           max-width: 980px;
           text-align: left;
         }
 
-        /* ══════════════════════════════════════════════════
-           CONTENT REVEAL ANIMATIONS
-           Each block slides in from the top of its own
-           bounding box, holds, then exits back up.
-           Technique: clip-path inset (creates the "window")
-           + translateY (gives the sliding motion).
-           The animation repeats infinitely with staggered
-           delays so elements enter one after another.
-        ══════════════════════════════════════════════════ */
+        /* ─────────────────────────────────────────────────────
+           DELAYS UPDATED: all shifted +0.75s so elements begin
+           their entrance just as the boot-screen finishes fading
+           (~800ms). animation-fill-mode:both keeps them hidden
+           during the delay, so nothing flashes in early.
 
-        /* Badge — first in, delay 0s */
+           Before → After
+           0s     → 0.75s   (badge)
+           0.14s  → 0.89s   (title main)
+           0.28s  → 1.03s   (title sub)
+           0.42s  → 1.17s   (meta 1)
+           0.56s  → 1.31s   (meta 2)
+           0.70s  → 1.45s   (meta 3)
+           0.84s  → 1.59s   (actions)
+        ───────────────────────────────────────────────────── */
+
         .heroBadge {
           width: fit-content;
           display: inline-flex;
@@ -239,7 +242,7 @@ export default function Hero() {
           box-shadow:
             inset 0 1px 0 rgba(255,255,255,0.1),
             0 18px 50px rgba(0,0,0,0.18);
-          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0s infinite both;
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.75s infinite both;
         }
 
         .badgeDot {
@@ -264,15 +267,13 @@ export default function Hero() {
           white-space: nowrap;
         }
 
-        /* Title main — delay 0.14s */
         .titleMain {
           color: #f4f1ea;
           font-size: clamp(3.45rem, 5.25vw, 5.75rem);
           margin-bottom: 18px;
-          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.14s infinite both;
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.89s infinite both;
         }
 
-        /* Title sub — delay 0.28s, shimmer runs concurrently */
         .titleSub {
           width: fit-content;
           max-width: 100%;
@@ -287,7 +288,7 @@ export default function Hero() {
           background-clip: text;
           -webkit-text-fill-color: transparent;
           animation:
-            revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.28s infinite both,
+            revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 1.03s infinite both,
             titleShine 5.5s linear 0s infinite;
         }
 
@@ -310,15 +311,14 @@ export default function Hero() {
           white-space: nowrap;
         }
 
-        /* Meta items — staggered 0.42 / 0.56 / 0.70s */
         .heroMeta div:nth-child(1) {
-          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.42s infinite both;
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 1.17s infinite both;
         }
         .heroMeta div:nth-child(2) {
-          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.56s infinite both;
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 1.31s infinite both;
         }
         .heroMeta div:nth-child(3) {
-          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.70s infinite both;
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 1.45s infinite both;
         }
 
         .heroMeta :global(.metaIcon) {
@@ -330,14 +330,13 @@ export default function Hero() {
           flex-shrink: 0;
         }
 
-        /* Action buttons — last in, delay 0.84s */
         .heroActions {
           display: flex;
           align-items: center;
           flex-wrap: wrap;
           gap: 15px;
           margin-top: 32px;
-          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 0.84s infinite both;
+          animation: revealFromTop 7s cubic-bezier(0.16, 1, 0.3, 1) 1.59s infinite both;
         }
 
         .mobileShipOnly { display: none; }
@@ -472,56 +471,37 @@ export default function Hero() {
           animation: shipLightPulse 6.8s 9s ease-in-out infinite;
         }
 
-        /* ══════════════════════════════════════════════════
-           THE CORE ANIMATION
-           1. Start: clipped from bottom (inset 100%) + shifted up → nothing visible
-           2. Slide in: clip opens top-first + element drops to natural position
-           3. Hold: fully visible at rest
-           4. Exit: element shifts back up + clip closes from bottom again
-           5. Hold hidden → next cycle
-        ══════════════════════════════════════════════════ */
         @keyframes revealFromTop {
-          /* Hidden above — clip closed, element shifted up */
           0% {
             clip-path: inset(0 0 100% 0);
             transform: translateY(-26px);
             opacity: 0;
             animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
           }
-
-          /* Fully in — clip open, element at rest */
           18% {
             clip-path: inset(0 0 0% 0);
             transform: translateY(0px);
             opacity: 1;
             animation-timing-function: linear;
           }
-
-          /* Stay visible */
           68% {
             clip-path: inset(0 0 0% 0);
             transform: translateY(0px);
             opacity: 1;
             animation-timing-function: cubic-bezier(0.4, 0, 0.8, 0);
           }
-
-          /* Exit back up — clip closes, element lifts */
           84% {
             clip-path: inset(0 0 100% 0);
             transform: translateY(-26px);
             opacity: 0;
             animation-timing-function: linear;
           }
-
-          /* Hold hidden until next cycle */
           100% {
             clip-path: inset(0 0 100% 0);
             transform: translateY(-26px);
             opacity: 0;
           }
         }
-
-        /* ══ All existing keyframes unchanged ══ */
 
         @keyframes heroFirstPaintReveal {
           from { opacity: 0; }
@@ -579,8 +559,6 @@ export default function Hero() {
           0%   { background-position: -160% center; }
           100% { background-position:  160% center; }
         }
-
-        /* ══════════ Responsive — all unchanged ══════════ */
 
         @media (max-width: 1400px) {
           .titleMain  { font-size: clamp(3.2rem, 4.7vw, 5.25rem); }
@@ -710,7 +688,6 @@ export default function Hero() {
           50%       { transform: translate3d(0, -8px, 0) rotateX(0deg) rotateY(-6deg) scale(1); }
         }
 
-        /* Mobile ship swap — unchanged */
         @media (max-width: 760px) {
           .heroSection       { min-height: auto !important; padding-bottom: 44px !important; }
           .heroShell         { display: block !important; min-height: auto !important; }
@@ -765,13 +742,11 @@ export default function Hero() {
           50%       { transform: translateY(-7px); }
         }
 
-        /* Safety overrides — unchanged */
         .heroSection { background: #071423 !important; }
         .heroBackdrop, .heroLight, .heroLightOne, .heroLightTwo, .shipAura {
           display: none !important;
         }
 
-        /* Reduced motion — all animations collapsed */
         @media (prefers-reduced-motion: reduce) {
           .heroSection,
           .heroSection * {
@@ -781,7 +756,6 @@ export default function Hero() {
             scroll-behavior: auto !important;
           }
           .heroSection { opacity: 1 !important; }
-          /* Make all content fully visible when motion is reduced */
           .heroBadge, .titleMain, .titleSub,
           .heroMeta div, .heroActions {
             clip-path: none !important;
