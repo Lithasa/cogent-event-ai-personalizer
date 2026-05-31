@@ -205,22 +205,6 @@ export default function Hero() {
           text-align: left;
         }
 
-        /* ─────────────────────────────────────────────────────
-           DELAYS UPDATED: all shifted +0.75s so elements begin
-           their entrance just as the boot-screen finishes fading
-           (~800ms). animation-fill-mode:both keeps them hidden
-           during the delay, so nothing flashes in early.
-
-           Before → After
-           0s     → 0.75s   (badge)
-           0.14s  → 0.89s   (title main)
-           0.28s  → 1.03s   (title sub)
-           0.42s  → 1.17s   (meta 1)
-           0.56s  → 1.31s   (meta 2)
-           0.70s  → 1.45s   (meta 3)
-           0.84s  → 1.59s   (actions)
-        ───────────────────────────────────────────────────── */
-
         .heroBadge {
           width: fit-content;
           display: inline-flex;
@@ -471,6 +455,10 @@ export default function Hero() {
           animation: shipLightPulse 6.8s 9s ease-in-out infinite;
         }
 
+        /* ══════════════════════════════════════════════════
+           DESKTOP animation — clip-path + translateY
+           Works great on all desktop/laptop browsers.
+        ══════════════════════════════════════════════════ */
         @keyframes revealFromTop {
           0% {
             clip-path: inset(0 0 100% 0);
@@ -502,6 +490,69 @@ export default function Hero() {
             opacity: 0;
           }
         }
+
+        /* ══════════════════════════════════════════════════
+           MOBILE animation — opacity + translateY ONLY.
+           clip-path is NOT used here because iOS Safari and
+           many Android browsers don't GPU-accelerate it,
+           causing elements to freeze or stay permanently
+           hidden. This version is universally compatible.
+        ══════════════════════════════════════════════════ */
+        @keyframes revealFromTopMobile {
+          0% {
+            opacity: 0;
+            transform: translateY(-22px);
+            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+          }
+          18% {
+            opacity: 1;
+            transform: translateY(0px);
+            animation-timing-function: linear;
+          }
+          68% {
+            opacity: 1;
+            transform: translateY(0px);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.8, 0);
+          }
+          84%, 100% {
+            opacity: 0;
+            transform: translateY(-22px);
+          }
+        }
+
+        /* ══════════════════════════════════════════════════
+           MOBILE OVERRIDE — swap revealFromTop for
+           revealFromTopMobile on all touch-screen breakpoints.
+           Delays are identical; only the keyframe changes.
+        ══════════════════════════════════════════════════ */
+        @media (max-width: 900px) {
+          .heroBadge {
+            animation: revealFromTopMobile 7s ease-out 0.75s infinite both;
+          }
+          .titleMain {
+            animation: revealFromTopMobile 7s ease-out 0.89s infinite both;
+          }
+          /* titleSub keeps titleShine alongside the new keyframe */
+          .titleSub {
+            animation:
+              revealFromTopMobile 7s ease-out 1.03s infinite both,
+              titleShine 5.5s linear 0s infinite;
+          }
+          .heroMeta div:nth-child(1) {
+            animation: revealFromTopMobile 7s ease-out 1.17s infinite both;
+          }
+          .heroMeta div:nth-child(2) {
+            animation: revealFromTopMobile 7s ease-out 1.31s infinite both;
+          }
+          .heroMeta div:nth-child(3) {
+            animation: revealFromTopMobile 7s ease-out 1.45s infinite both;
+          }
+          .heroActions {
+            animation: revealFromTopMobile 7s ease-out 1.59s infinite both;
+          }
+        }
+
+        /* ══ All existing keyframes — unchanged ══ */
 
         @keyframes heroFirstPaintReveal {
           from { opacity: 0; }
@@ -559,6 +610,8 @@ export default function Hero() {
           0%   { background-position: -160% center; }
           100% { background-position:  160% center; }
         }
+
+        /* ══ All responsive rules — unchanged ══ */
 
         @media (max-width: 1400px) {
           .titleMain  { font-size: clamp(3.2rem, 4.7vw, 5.25rem); }
