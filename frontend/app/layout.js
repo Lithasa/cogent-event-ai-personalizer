@@ -1,5 +1,5 @@
 import './globals.css'
-import PageLoader from '../components/PageLoader'   // ← ADD: import
+import PageLoader from '../components/PageLoader'   
 
 export const metadata = {
   title: 'Troubled Waters: Sailing with AI in Supply Chain',
@@ -93,7 +93,7 @@ export default function RootLayout({ children }) {
       <body>
         <div id="boot-screen" aria-hidden="true" />
 
-        <PageLoader />   {/* ← ADD: renders on top of boot-screen (same z-index, later in DOM) */}
+        <PageLoader />   {}
 
         <script dangerouslySetInnerHTML={{ __html: scrollResetScript }} />
         <script dangerouslySetInnerHTML={{ __html: bootScreenScript }} />

@@ -11,18 +11,17 @@ export default function PageLoader() {
 
     const triggerFade = () => {
       setFadeOut(true)
-      // Remove from DOM after the fade transition completes (matches 0.35s)
+      
       setTimeout(() => setGone(true), 400)
     }
 
-    // Edge case: app-ready was already added before this effect ran
+    
     if (html.classList.contains('app-ready')) {
       triggerFade()
       return
     }
 
-    // Watch for the exact same 'app-ready' class that bootScreenScript adds.
-    // This keeps PageLoader perfectly in sync with boot-screen — they fade together.
+   
     const observer = new MutationObserver(() => {
       if (html.classList.contains('app-ready')) {
         observer.disconnect()
