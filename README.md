@@ -14,7 +14,7 @@ The application redesigns the reference event website into a modern, responsive 
 | Backend API | https://cogent-event-ai-personalizer-api.onrender.com |
 | API Docs (Swagger) | https://cogent-event-ai-personalizer-api.onrender.com/docs |
 
-> **Note on the live backend:** The project uses the OpenAI API on a free-tier quota. If the personalized invitation email body does not appear in the Render logs or API response, it is likely because the free-tier token limit has been reached. The session matching and MCP simulation log (recipient, timestamp) will still execute correctly — only the LLM-generated email draft will be absent.
+> **Note on the live backend:** The project uses the OpenAI API on a free-tier quota. If the personalized invitation email body does not appear in the Render logs or API response, it is likely because the free-tier token limit has been reached. The session matching and MCP simulation log (recipient, timestamp) will still execute correctly ,only the LLM generated email draft will be absent.Because of that issue , i have uploaded a Screenshot of a working Render Log.
 
 ---
 
